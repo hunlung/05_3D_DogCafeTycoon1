@@ -41,27 +41,27 @@ public class TestBase : MonoBehaviour
     }
 
 
-    private void Ontest5(InputAction.CallbackContext context)
+    protected virtual void Ontest5(InputAction.CallbackContext context)
     {
 
     }
 
-    private void Ontest4(InputAction.CallbackContext context)
+    protected virtual void Ontest4(InputAction.CallbackContext context)
     {
 
     }
 
-    private void Ontest3(InputAction.CallbackContext context)
+    protected virtual void Ontest3(InputAction.CallbackContext context)
     {
 
     }
 
-    private void Ontest2(InputAction.CallbackContext context)
+    protected virtual void Ontest2(InputAction.CallbackContext context)
     {
 
     }
 
-    private void Ontest1(InputAction.CallbackContext context)
+    protected virtual void Ontest1(InputAction.CallbackContext context)
     {
 
     }
