@@ -76,6 +76,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "V",
+                    "type": "Button",
+                    "id": "3c91b5b3-632f-4879-a48a-f863e39b3d2f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Space",
+                    "type": "Button",
+                    "id": "ad425921-cf62-4c36-8b8a-3284946613e4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -201,37 +219,37 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "1D Axis",
-                    "id": "50f3fd1a-84ac-4564-a150-4b396b357dd8",
-                    "path": "1DAxis",
+                    "name": "",
+                    "id": "aaa351e7-4c06-4c85-bd00-ec0cb13cd5a0",
+                    "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "MouseWheel",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "dd7d08d0-d8fc-4c83-a360-dc4c138a0d7f",
-                    "path": "<Mouse>/scroll/y",
+                    "name": "",
+                    "id": "9826e245-678c-4e19-8230-be7e0b9fe482",
+                    "path": "<Keyboard>/v",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MouseWheel",
+                    "action": "V",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 },
                 {
-                    "name": "positive",
-                    "id": "dda5f083-5f56-4b7e-9a5a-494e8d436adc",
-                    "path": "<Mouse>/scroll/y",
+                    "name": "",
+                    "id": "25fab10c-ab94-4a46-95f6-54d973f7fe33",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MouseWheel",
+                    "action": "Space",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 }
             ]
         }

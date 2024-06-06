@@ -98,6 +98,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""V"",
+                    ""type"": ""Button"",
+                    ""id"": ""3c91b5b3-632f-4879-a48a-f863e39b3d2f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Space"",
+                    ""type"": ""Button"",
+                    ""id"": ""ad425921-cf62-4c36-8b8a-3284946613e4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -223,37 +241,37 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""50f3fd1a-84ac-4564-a150-4b396b357dd8"",
-                    ""path"": ""1DAxis"",
+                    ""name"": """",
+                    ""id"": ""aaa351e7-4c06-4c85-bd00-ec0cb13cd5a0"",
+                    ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MouseWheel"",
-                    ""isComposite"": true,
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
-                    ""id"": ""dd7d08d0-d8fc-4c83-a360-dc4c138a0d7f"",
-                    ""path"": ""<Mouse>/scroll/y"",
+                    ""name"": """",
+                    ""id"": ""9826e245-678c-4e19-8230-be7e0b9fe482"",
+                    ""path"": ""<Keyboard>/v"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MouseWheel"",
+                    ""action"": ""V"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""positive"",
-                    ""id"": ""dda5f083-5f56-4b7e-9a5a-494e8d436adc"",
-                    ""path"": ""<Mouse>/scroll/y"",
+                    ""name"": """",
+                    ""id"": ""25fab10c-ab94-4a46-95f6-54d973f7fe33"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MouseWheel"",
+                    ""action"": ""Space"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -270,6 +288,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player__1 = m_Player.FindAction("1", throwIfNotFound: true);
         m_Player__2 = m_Player.FindAction("2", throwIfNotFound: true);
         m_Player_MouseWheel = m_Player.FindAction("MouseWheel", throwIfNotFound: true);
+        m_Player_V = m_Player.FindAction("V", throwIfNotFound: true);
+        m_Player_Space = m_Player.FindAction("Space", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -339,6 +359,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player__1;
     private readonly InputAction m_Player__2;
     private readonly InputAction m_Player_MouseWheel;
+    private readonly InputAction m_Player_V;
+    private readonly InputAction m_Player_Space;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -351,6 +373,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @_1 => m_Wrapper.m_Player__1;
         public InputAction @_2 => m_Wrapper.m_Player__2;
         public InputAction @MouseWheel => m_Wrapper.m_Player_MouseWheel;
+        public InputAction @V => m_Wrapper.m_Player_V;
+        public InputAction @Space => m_Wrapper.m_Player_Space;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -384,6 +408,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @MouseWheel.started += instance.OnMouseWheel;
             @MouseWheel.performed += instance.OnMouseWheel;
             @MouseWheel.canceled += instance.OnMouseWheel;
+            @V.started += instance.OnV;
+            @V.performed += instance.OnV;
+            @V.canceled += instance.OnV;
+            @Space.started += instance.OnSpace;
+            @Space.performed += instance.OnSpace;
+            @Space.canceled += instance.OnSpace;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -412,6 +442,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @MouseWheel.started -= instance.OnMouseWheel;
             @MouseWheel.performed -= instance.OnMouseWheel;
             @MouseWheel.canceled -= instance.OnMouseWheel;
+            @V.started -= instance.OnV;
+            @V.performed -= instance.OnV;
+            @V.canceled -= instance.OnV;
+            @Space.started -= instance.OnSpace;
+            @Space.performed -= instance.OnSpace;
+            @Space.canceled -= instance.OnSpace;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -439,5 +475,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void On_1(InputAction.CallbackContext context);
         void On_2(InputAction.CallbackContext context);
         void OnMouseWheel(InputAction.CallbackContext context);
+        void OnV(InputAction.CallbackContext context);
+        void OnSpace(InputAction.CallbackContext context);
     }
 }

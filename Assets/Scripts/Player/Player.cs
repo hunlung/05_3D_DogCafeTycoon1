@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,9 +15,12 @@ public class Player : MonoBehaviour
             if (money != value)
             {
                 money = value;
+                OnMoneyChange?.Invoke(money);
             }
         }
     }
+
+    public Action<int> OnMoneyChange;
 
 
 

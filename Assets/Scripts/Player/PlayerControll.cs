@@ -1,68 +1,94 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerControll : MonoBehaviour
 {
+    [SerializeField] float speed = 7f;
+    private float currentRotationAngle = 0f;
+    private float targetRotationAngle = 0f;
+    private readonly float rotationSpeed = 90f; 
+    private Coroutine rotateCoroutine;
 
 
-    Vector2 MoveDirection;
-
-
-    [SerializeField] float Speed = 7f;
-
-
-    PlayerInput playerinput;
+    private Vector2 moveDirection;
+    private PlayerInput playerInput;
+    private Camera mainCamera;
+    TimeManager timemanager;
 
     private void Awake()
     {
-        playerinput = new PlayerInput();
+        playerInput = new PlayerInput();
+        mainCamera = Camera.main;
     }
     private void Start()
     {
+        timemanager = GameManager.Instance.TimeManager;
     }
-
 
     private void OnEnable()
     {
-        playerinput.Player.Enable();
-        playerinput.Player.WASD.performed += OnMoveDirection;
-        playerinput.Player.WASD.canceled += OnStop;
-        playerinput.Player.Q.performed += OnLeftAngle;
-        playerinput.Player.E.performed += OnRightAngle;
-        playerinput.Player.LeftClick.performed += OnClick;
-        playerinput.Player.RightClick.performed += OnRightClick;
-        playerinput.Player.MouseWheel.performed += OnCameraZoom;
-        playerinput.Player._1.performed += StoreInfo;
-        playerinput.Player._2.performed += RemainStockInfo;
-
+        playerInput.Player.Enable();
+        playerInput.Player.WASD.performed += OnMoveDirection;
+        playerInput.Player.WASD.canceled += OnStop;
+        playerInput.Player.Q.performed += OnLeftAngle;
+        playerInput.Player.E.performed += OnRightAngle;
+        playerInput.Player.LeftClick.performed += OnClick;
+        playerInput.Player.RightClick.performed += OnRightClick;
+        playerInput.Player.MouseWheel.performed += OnCameraZoom;
+        playerInput.Player._1.performed += StoreInfo;
+        playerInput.Player._2.performed += RemainStockInfo;
+        playerInput.Player.V.performed += ChangeTimeSpeed;
+        playerInput.Player.Space.performed += StopTimeSpeed;
     }
+
+    private void StopTimeSpeed(InputAction.CallbackContext context)
+    {
+        timemanager.StopTimeToggle();
+    }
+
+    private void ChangeTimeSpeed(InputAction.CallbackContext context)
+    {
+        timemanager.TimeSpeedChange();
+    }
+
     private void OnDisable()
     {
-        playerinput.Player.WASD.performed -= OnMoveDirection;
-        playerinput.Player.WASD.canceled -= OnStop;
-        playerinput.Player.Q.performed -= OnLeftAngle;
-        playerinput.Player.E.performed -= OnRightAngle;
-        playerinput.Player.LeftClick.performed -= OnClick;
-        playerinput.Player.RightClick.performed -= OnRightClick;
-        playerinput.Player.MouseWheel.performed -= OnCameraZoom;
-        playerinput.Player._1.performed -= StoreInfo;
-        playerinput.Player._2.performed -= RemainStockInfo;
-        playerinput.Disable();
+        playerInput.Player.WASD.performed -= OnMoveDirection;
+        playerInput.Player.WASD.canceled -= OnStop;
+        playerInput.Player.Q.performed -= OnLeftAngle;
+        playerInput.Player.E.performed -= OnRightAngle;
+        playerInput.Player.LeftClick.performed -= OnClick;
+        playerInput.Player.RightClick.performed -= OnRightClick;
+        playerInput.Player.MouseWheel.performed -= OnCameraZoom;
+        playerInput.Player._1.performed -= StoreInfo;
+        playerInput.Player._2.performed -= RemainStockInfo;
+        playerInput.Player.V.performed -= ChangeTimeSpeed;
+        playerInput.Player.Space.performed -= StopTimeSpeed;
+        playerInput.Disable();
     }
-
 
     private void OnCameraZoom(InputAction.CallbackContext context)
     {
-        float Value = context.ReadValue<float>();
-        Transform camearaTransform = gameObject.transform;
-        gameObject.transform.position = new Vector3(camearaTransform.position.x,
-                                                    Mathf.Clamp(camearaTransform.position.y + Value, 4, 8)
-                                                    , camearaTransform.transform.position.z);
+        float scrollValue = context.ReadValue<float>();
+        float scrollNomalize;
+        if(scrollValue > 0)
+        {
+            scrollNomalize = -1;
+        }
+        else
+        {
+            scrollNomalize = 1;
+        }
+
+        float PositionY = transform.position.y;
+        PositionY += scrollNomalize;
+        PositionY = Mathf.Clamp(PositionY, 4, 10);
+        
+        transform.position = new Vector3(transform.position.x,PositionY,transform.position.z);
+
+
     }
 
     private void RemainStockInfo(InputAction.CallbackContext context)
@@ -79,36 +105,59 @@ public class PlayerControll : MonoBehaviour
 
     private void OnClick(InputAction.CallbackContext context)
     {
-        
     }
-
     private void OnRightAngle(InputAction.CallbackContext context)
     {
+        targetRotationAngle += 25f;
+        rotateCoroutine ??= StartCoroutine(RotateCamera());
     }
 
     private void OnLeftAngle(InputAction.CallbackContext context)
     {
-        
+        targetRotationAngle -= 25f;
+        rotateCoroutine ??= StartCoroutine(RotateCamera());
     }
+
 
     private void OnMoveDirection(InputAction.CallbackContext context)
     {
-        MoveDirection = context.ReadValue<Vector2>();
+        moveDirection = context.ReadValue<Vector2>();
     }
 
     private void OnStop(InputAction.CallbackContext context)
     {
-        MoveDirection = Vector2.zero;
+        moveDirection = Vector2.zero;
     }
-
-
 
     private void Update()
     {
-        gameObject.transform.Translate(new Vector3(MoveDirection.x * Time.deltaTime * Speed, 0
-                                          , MoveDirection.y * Time.deltaTime * Speed),Space.World);
+        Vector3 movement = new(moveDirection.x, 0f, moveDirection.y);
+        movement = Quaternion.Euler(0f, mainCamera.transform.eulerAngles.y, 0f) * movement;
+        movement.Normalize();
+
+        movement.x *= speed;
+        movement.z *= speed;
+
+        transform.position += movement * Time.unscaledDeltaTime;
     }
 
+    private IEnumerator RotateCamera()
+    {
+        while (Mathf.Abs(currentRotationAngle - targetRotationAngle) > 0.1f)
+        {
+            currentRotationAngle = Mathf.MoveTowards(currentRotationAngle, targetRotationAngle, rotationSpeed * Time.deltaTime);
+            Vector3 currentRotation = mainCamera.transform.eulerAngles;
+            currentRotation.y = currentRotationAngle;
+            mainCamera.transform.eulerAngles = currentRotation;
+            yield return null;
+        }
+
+        currentRotationAngle = targetRotationAngle;
+        Vector3 targetRotation = mainCamera.transform.eulerAngles;
+        targetRotation.y = currentRotationAngle;
+        mainCamera.transform.eulerAngles = targetRotation;
+        rotateCoroutine = null;
+    }
 
 
 }
