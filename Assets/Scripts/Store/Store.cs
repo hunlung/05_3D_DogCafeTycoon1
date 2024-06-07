@@ -6,7 +6,7 @@ public class Store : MonoBehaviour
 {
     private int level;
     private float popularity;
-    private float satisfaction;
+    private float totalSatisfaction;
 
 
 
