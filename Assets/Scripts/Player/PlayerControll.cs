@@ -145,7 +145,7 @@ public class PlayerControll : MonoBehaviour
     {
         while (Mathf.Abs(currentRotationAngle - targetRotationAngle) > 0.1f)
         {
-            currentRotationAngle = Mathf.MoveTowards(currentRotationAngle, targetRotationAngle, rotationSpeed * Time.deltaTime);
+            currentRotationAngle = Mathf.MoveTowards(currentRotationAngle, targetRotationAngle, rotationSpeed * Time.unscaledDeltaTime);
             Vector3 currentRotation = mainCamera.transform.eulerAngles;
             currentRotation.y = currentRotationAngle;
             mainCamera.transform.eulerAngles = currentRotation;
