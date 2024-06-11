@@ -20,10 +20,11 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private Sprite doubleSprite;
     [SerializeField] private Sprite trippleSprite;
 
-    private int currentTimeSpeed = 1; 
+    private int currentTimeSpeed = 1;
     private int previousTimeSpeed = 1;
 
     public Action<int, int> OnTimeChanged; // 시간이 변경될 때 발생하는 이벤트
+    public Action<int, int> OnDayChanged;
 
     private int currentHour = 0; // 현재 시간 (시)
     public int CurrentHour
@@ -69,6 +70,31 @@ public class TimeManager : MonoBehaviour
                     CurrentHour += 1; // 60분이 되면 시간을 1시간 증가
                 }
                 OnTimeChanged?.Invoke(CurrentHour, CurrentMinute); // 시간 변경 이벤트 발생
+            }
+        }
+    }
+
+    private int month = 4;
+    public int Month
+    {
+        get { return month; }
+        set
+        {
+            if (month != value)
+                month = value;
+            OnDayChanged?.Invoke(Month, Day);
+        }
+    }
+    private int day = 5;
+    public int Day
+    {
+        get { return day; }
+        set
+        {
+            if (day != value)
+            {
+                day = value;
+                OnDayChanged?.Invoke(Month, Day);
             }
         }
     }
@@ -193,16 +219,20 @@ public class TimeManager : MonoBehaviour
 
     private void SetTimeSpeedImage(int timeSpeed)
     {
-        switch (timeSpeed)
+        if (CurrentSpeedImage.gameObject.activeSelf)
         {
-            case 0:
-                CurrentSpeedImage.sprite = stopSprite; break;
-            case 1:
-                CurrentSpeedImage.sprite = normalSprite; break;
-            case 2:
-                CurrentSpeedImage.sprite = doubleSprite; break;
-            case 3:
-                CurrentSpeedImage.sprite = trippleSprite; break;
+
+            switch (timeSpeed)
+            {
+                case 0:
+                    CurrentSpeedImage.sprite = stopSprite; break;
+                case 1:
+                    CurrentSpeedImage.sprite = normalSprite; break;
+                case 2:
+                    CurrentSpeedImage.sprite = doubleSprite; break;
+                case 3:
+                    CurrentSpeedImage.sprite = trippleSprite; break;
+            }
         }
     }
 

@@ -19,8 +19,9 @@ public class ItemBase : ScriptableObject
     public ItemType ItemType;
     
     //아이템 정보
-    [SerializeField] protected Sprite Icon;
+    public Sprite Icon;
     public string ItemName;
+    public int remaining;
     public int purchasePrice;
     public int sellPrice;
     public int quantity;
