@@ -274,6 +274,114 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""ItemShop"",
+            ""id"": ""614ed8e2-14fc-4107-a58e-db2777e08adb"",
+            ""actions"": [
+                {
+                    ""name"": ""1"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac74c17a-e373-42a8-b05e-5a7a8bbe20a6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""2"",
+                    ""type"": ""Button"",
+                    ""id"": ""27c8818f-346e-4fcb-88d1-da9d6e238793"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""3"",
+                    ""type"": ""Button"",
+                    ""id"": ""653ee4fa-1d04-4d55-839b-6b5bb77b1ceb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""4"",
+                    ""type"": ""Button"",
+                    ""id"": ""5e590f80-13cb-4b63-bd4e-4898571862d2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""5"",
+                    ""type"": ""Button"",
+                    ""id"": ""3ce99a4a-9d9c-4349-822e-21170b58049e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""64cf9623-57d8-47ef-b76d-1db65fdb8f9d"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8f469759-017f-4eeb-8d81-5761f3c230f5"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""831c7263-b3bc-4687-8d28-a26b6d89f829"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""56b85d4b-5605-47f4-810f-60ba0c8dc71d"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ecffeb0f-1df2-4358-933b-175067959c64"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -290,6 +398,13 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_MouseWheel = m_Player.FindAction("MouseWheel", throwIfNotFound: true);
         m_Player_V = m_Player.FindAction("V", throwIfNotFound: true);
         m_Player_Space = m_Player.FindAction("Space", throwIfNotFound: true);
+        // ItemShop
+        m_ItemShop = asset.FindActionMap("ItemShop", throwIfNotFound: true);
+        m_ItemShop__1 = m_ItemShop.FindAction("1", throwIfNotFound: true);
+        m_ItemShop__2 = m_ItemShop.FindAction("2", throwIfNotFound: true);
+        m_ItemShop__3 = m_ItemShop.FindAction("3", throwIfNotFound: true);
+        m_ItemShop__4 = m_ItemShop.FindAction("4", throwIfNotFound: true);
+        m_ItemShop__5 = m_ItemShop.FindAction("5", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -465,6 +580,84 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // ItemShop
+    private readonly InputActionMap m_ItemShop;
+    private List<IItemShopActions> m_ItemShopActionsCallbackInterfaces = new List<IItemShopActions>();
+    private readonly InputAction m_ItemShop__1;
+    private readonly InputAction m_ItemShop__2;
+    private readonly InputAction m_ItemShop__3;
+    private readonly InputAction m_ItemShop__4;
+    private readonly InputAction m_ItemShop__5;
+    public struct ItemShopActions
+    {
+        private @PlayerInput m_Wrapper;
+        public ItemShopActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @_1 => m_Wrapper.m_ItemShop__1;
+        public InputAction @_2 => m_Wrapper.m_ItemShop__2;
+        public InputAction @_3 => m_Wrapper.m_ItemShop__3;
+        public InputAction @_4 => m_Wrapper.m_ItemShop__4;
+        public InputAction @_5 => m_Wrapper.m_ItemShop__5;
+        public InputActionMap Get() { return m_Wrapper.m_ItemShop; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ItemShopActions set) { return set.Get(); }
+        public void AddCallbacks(IItemShopActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ItemShopActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ItemShopActionsCallbackInterfaces.Add(instance);
+            @_1.started += instance.On_1;
+            @_1.performed += instance.On_1;
+            @_1.canceled += instance.On_1;
+            @_2.started += instance.On_2;
+            @_2.performed += instance.On_2;
+            @_2.canceled += instance.On_2;
+            @_3.started += instance.On_3;
+            @_3.performed += instance.On_3;
+            @_3.canceled += instance.On_3;
+            @_4.started += instance.On_4;
+            @_4.performed += instance.On_4;
+            @_4.canceled += instance.On_4;
+            @_5.started += instance.On_5;
+            @_5.performed += instance.On_5;
+            @_5.canceled += instance.On_5;
+        }
+
+        private void UnregisterCallbacks(IItemShopActions instance)
+        {
+            @_1.started -= instance.On_1;
+            @_1.performed -= instance.On_1;
+            @_1.canceled -= instance.On_1;
+            @_2.started -= instance.On_2;
+            @_2.performed -= instance.On_2;
+            @_2.canceled -= instance.On_2;
+            @_3.started -= instance.On_3;
+            @_3.performed -= instance.On_3;
+            @_3.canceled -= instance.On_3;
+            @_4.started -= instance.On_4;
+            @_4.performed -= instance.On_4;
+            @_4.canceled -= instance.On_4;
+            @_5.started -= instance.On_5;
+            @_5.performed -= instance.On_5;
+            @_5.canceled -= instance.On_5;
+        }
+
+        public void RemoveCallbacks(IItemShopActions instance)
+        {
+            if (m_Wrapper.m_ItemShopActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IItemShopActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ItemShopActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ItemShopActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ItemShopActions @ItemShop => new ItemShopActions(this);
     public interface IPlayerActions
     {
         void OnWASD(InputAction.CallbackContext context);
@@ -477,5 +670,13 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnMouseWheel(InputAction.CallbackContext context);
         void OnV(InputAction.CallbackContext context);
         void OnSpace(InputAction.CallbackContext context);
+    }
+    public interface IItemShopActions
+    {
+        void On_1(InputAction.CallbackContext context);
+        void On_2(InputAction.CallbackContext context);
+        void On_3(InputAction.CallbackContext context);
+        void On_4(InputAction.CallbackContext context);
+        void On_5(InputAction.CallbackContext context);
     }
 }

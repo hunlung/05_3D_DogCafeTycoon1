@@ -14,6 +14,7 @@ public class MoneyPanel : MonoBehaviour
         player = GameManager.Instance.Player;
         player.OnMoneyChange += SetMoneyText;
         text = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        SetMoneyText(player.Money);
     }
 
     private void SetMoneyText(int amount)

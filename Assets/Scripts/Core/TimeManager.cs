@@ -7,18 +7,20 @@ using UnityEngine.UI;
 public class TimeManager : MonoBehaviour
 {
     [SerializeField] private Material nightSkybox; // 밤 하늘을 표현할 스카이박스 머티리얼
+    [SerializeField] private Material daySkybox; //  하늘을 표현할 스카이박스 머티리얼
+
     private Button stopSpeedButton; // 정지 버튼
     private Button normalSpeedButton; // 일반 속도 버튼
     private Button doubleSpeedButton; // 2배속 버튼
     private Button tripleSpeedButton; // 3배속 버튼
-    private Image CurrentSpeedImage;
+    private Image CurrentSpeedImage; //시간 밑 배속 이미지
 
     [SerializeField] private Sprite stopSprite;
     [SerializeField] private Sprite normalSprite;
     [SerializeField] private Sprite doubleSprite;
     [SerializeField] private Sprite trippleSprite;
 
-    private int currentTimeSpeed = 1;
+    private int currentTimeSpeed = 1; 
     private int previousTimeSpeed = 1;
 
     public Action<int, int> OnTimeChanged; // 시간이 변경될 때 발생하는 이벤트
@@ -40,7 +42,13 @@ public class TimeManager : MonoBehaviour
                 }
                 if (currentHour >= endHour)
                 {
-                    // 영업 시간이 끝났음을 알림
+                    //바로 끝나지만 마지막 손님이 나가고 난후 끝나도록 바꿀 필요가 있음 + 연출.
+                    StopAllCoroutines();
+                    //가게 영업 준비 시작 + 낮으로 변경
+                    GameManager.Instance.DayEnd();
+                    CurrentSpeedImage.gameObject.SetActive(false);
+                    RenderSettings.skybox = daySkybox;
+                    isNight = false;
                 }
             }
         }
@@ -109,6 +117,8 @@ public class TimeManager : MonoBehaviour
     {
         CurrentHour = startHour; // 시작 시간으로 설정
         CurrentMinute = 0; // 분 초기화
+        CurrentSpeedImage.gameObject.SetActive(true); // 꺼둔 배속 아이콘 키기
+        SetNormalTimeSpeed(); // 1배속으로 변경하기
         while (CurrentHour <= endHour)
         {
             CurrentMinute += 1; // 1분씩 증가

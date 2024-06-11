@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -29,6 +30,7 @@ public class PlayerControll : MonoBehaviour
 
     private void OnEnable()
     {
+        moveDirection = Vector2.zero;
         playerInput.Player.Enable();
         playerInput.Player.WASD.performed += OnMoveDirection;
         playerInput.Player.WASD.canceled += OnStop;

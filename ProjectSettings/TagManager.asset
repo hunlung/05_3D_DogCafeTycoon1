@@ -7,6 +7,14 @@ TagManager:
   - Boundary
   - GameSpeedButton
   - CurrentSpeedImage
+  - ItemShop
+  - DessertPanel
+  - DrinkPanel
+  - GoodsPanel
+  - MedicinePanel
+  - ItemBuySellPanel
+  - RequirementItemPanel
+  - Canvas
   layers:
   - Default
   - TransparentFX

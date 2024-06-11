@@ -22,7 +22,10 @@ public class Player : MonoBehaviour
 
     public Action<int> OnMoneyChange;
 
-
+    private void Start()
+    {
+        Money += 20000;
+    }
 
 
 }

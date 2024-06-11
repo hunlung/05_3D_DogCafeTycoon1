@@ -28,6 +28,12 @@ public class TestTime : TestBase
 
     protected override void Ontest3(InputAction.CallbackContext context)
     {
+        timeManager.CurrentMinute += 5;
+
+    }
+
+    protected override void Ontest4(InputAction.CallbackContext context)
+    {
         player.Money += 500;
     }
 
