@@ -15,7 +15,6 @@ public enum ItemType : byte
 public class ItemBase : ScriptableObject
 {
     //아이템 분류
-    public int itemCode;
     public ItemType ItemType;
     
     //아이템 정보

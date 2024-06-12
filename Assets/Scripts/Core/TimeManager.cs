@@ -27,6 +27,10 @@ public class TimeManager : MonoBehaviour
     public Action<int, int> OnDayChanged;
 
     private int currentHour = 0; // 현재 시간 (시)
+    
+    /// <summary>
+    /// TODO:: 시간이 끝나면 바로 일이 넘겨지는 중, 연출 변경 시 코드수정 필요
+    /// </summary>
     public int CurrentHour
     {
         get { return currentHour; }
@@ -47,6 +51,7 @@ public class TimeManager : MonoBehaviour
                     StopAllCoroutines();
                     //가게 영업 준비 시작 + 낮으로 변경
                     GameManager.Instance.DayEnd();
+                    Day += 1;
                     CurrentSpeedImage.gameObject.SetActive(false);
                     RenderSettings.skybox = daySkybox;
                     isNight = false;
@@ -74,7 +79,11 @@ public class TimeManager : MonoBehaviour
         }
     }
 
+    //4월스타트
     private int month = 4;
+    /// <summary>
+    /// 12개월의 달을 가진 월
+    /// </summary>
     public int Month
     {
         get { return month; }
@@ -82,10 +91,14 @@ public class TimeManager : MonoBehaviour
         {
             if (month != value)
                 month = value;
+            month %= 13;
+            month = (int)Mathf.Max(1f, month);
             OnDayChanged?.Invoke(Month, Day);
         }
     }
+    //5일 스타트
     private int day = 5;
+    //달력의 31일,30일,28일 구현
     public int Day
     {
         get { return day; }
@@ -94,6 +107,30 @@ public class TimeManager : MonoBehaviour
             if (day != value)
             {
                 day = value;
+                if(Month == 2)
+                {
+                    if(Day >= 29)
+                    {
+                        Month += 1;
+                        day = 0;
+                    }
+                }
+                else if(Month == 1 || Month == 3 || Month == 5 || Month == 7 || Month == 8 || Month == 10 || Month == 12)
+                {
+                    if(Day >= 32)
+                    {
+                        Month += 1;
+                        day = 0;
+                    }
+                }
+                else
+                {
+                    if(day >= 31)
+                    {
+                        Month += 1;
+                        day = 0;
+                    }
+                }
                 OnDayChanged?.Invoke(Month, Day);
             }
         }

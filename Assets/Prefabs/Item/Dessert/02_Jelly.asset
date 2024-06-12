@@ -16,6 +16,7 @@ MonoBehaviour:
   ItemType: 2
   Icon: {fileID: 0}
   ItemName: "\uC824\uB9AC"
+  remaining: 0
   purchasePrice: 700
   sellPrice: 1500
   quantity: 0
@@ -23,4 +24,4 @@ MonoBehaviour:
   upgradePrice: 5500
   upgradeEfficiency: 0.5
   ItemInfo: "\uC2FC\uAC12\uC5D0 \uAC1C\uAECC\uB290\uB08C\uC744 \uB290\uB084 \uC218
-    \uC788\uB294 \uB531\uB531\uD55C\uC824\uB9AC"
+    \uC788\uB294 \uC824\uB9AC"
