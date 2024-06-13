@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dc9da99ef9200b4bb3ad5a4fc837492, type: 3}
   m_Name: 01_DogGumCushion
   m_EditorClassIdentifier: 
-  itemCode: 0
   ItemType: 0
   Icon: {fileID: 0}
   ItemName: "\uAC1C\uAECC\uCFE0\uC158"
+  remaining: 0
   purchasePrice: 3000
   sellPrice: 6000
-  quantity: 0
   satisfaction: 8
   upgradePrice: 20000
   upgradeEfficiency: 0.6
-  ItemInfo: "\uAC1C\uAECC\uBAA8\uC591\uC758\uCFE0\uC158,\uC624\uB798\uAC00\uC9C0\uC54A\uB294\uB2E4."
+  upgradeRequirement: 0
+  requirementinfo: 
+  ItemInfo: "\uAC1C\uAECC\uBAA8\uC591\uC758\uCFE0\uC158,\uC77C\uC8FC\uC77C\uC774\uB098
+    \uC37B\uB2E4\uBA74 \uACE0\uAE09\uC774\uB2E4."

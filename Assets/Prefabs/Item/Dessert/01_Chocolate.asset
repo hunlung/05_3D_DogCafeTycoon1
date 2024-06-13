@@ -12,16 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18832757ec55bb449933bce0112fcb8, type: 3}
   m_Name: 01_Chocolate
   m_EditorClassIdentifier: 
-  itemCode: 0
   ItemType: 2
   Icon: {fileID: 21300000, guid: 38cd16dd427718d4da46a4cf6d1f1b63, type: 3}
   ItemName: "\uCD08\uCF54\uBC14"
   remaining: 0
   purchasePrice: 800
-  sellPrice: 2000
-  quantity: 0
-  satisfaction: 3
-  upgradePrice: 7500
+  sellPrice: 1100
+  quantity: 4
+  satisfaction: 4
+  upgradePrice: 4200
   upgradeEfficiency: 0.3
   ItemInfo: "\uAC1C\uB4E4\uC774 \uC88B\uC544(\uC544\uB2D8)\uD558\uB294 \uCD08\uCF54\uBC14(\uC544\uB2D8),\uBA39\uC5B4\uB3C4
     \uAD1C\uCC2E\uB2E4."

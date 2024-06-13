@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf3a9919ae3706a43ad082852545f039, type: 3}
   m_Name: 03_Espresso
   m_EditorClassIdentifier: 
-  itemCode: 2
   ItemType: 1
   Icon: {fileID: 0}
   ItemName: "\uC5D0\uC2A4\uD504\uB808\uC18C"
+  remaining: 0
   purchasePrice: 500
   sellPrice: 2000
-  quantity: 0
   satisfaction: 1
   upgradePrice: 7500
   upgradeEfficiency: 0.1
+  upgradeRequirement: 1
+  requirementinfo: "\uCEE4\uD53C \uBA38\uC2E0 \uAD6C\uB9E4"
   ItemInfo: "\uAC1C\uB4E4\uC774 \uBCC4\uB85C \uC88B\uC544\uD558\uC9C0\uC54A\uB294\uB2E4."

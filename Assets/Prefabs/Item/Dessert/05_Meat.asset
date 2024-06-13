@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18832757ec55bb449933bce0112fcb8, type: 3}
   m_Name: 05_Meat
   m_EditorClassIdentifier: 
-  itemCode: 4
   ItemType: 2
   Icon: {fileID: 0}
   ItemName: "\uACE0\uAE30"
+  remaining: 0
   purchasePrice: 2500
   sellPrice: 5000
-  quantity: 0
   satisfaction: 8
   upgradePrice: 19000
   upgradeEfficiency: 0.4
+  upgradeRequirement: 1
+  requirementinfo: "\uAC00\uAC8C \uB808\uBCA8 4\uB2EC\uC131"
   ItemInfo: "\uD584\uC774\uB2E4."
