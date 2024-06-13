@@ -21,6 +21,8 @@ public class ItemShopManager : MonoBehaviour
     [SerializeField] Button[] returnButtons;
     [SerializeField] Button[] itemBuyButtons;
     [SerializeField] Button requirementButton;
+    [SerializeField] Button[] upgradeButtons;
+    Button lackMoneyButton;
 
     GameObject ItemShopPanel;
     GameObject dessertPanel;
@@ -29,14 +31,14 @@ public class ItemShopManager : MonoBehaviour
     GameObject medicinePanel;
     GameObject ItemBuyPanel;
     GameObject RequirementPanel;
-
+    GameObject LackMoneyImage;
 
     [SerializeField] Item_Dessert[] item_Dessert;
     [SerializeField] Item_Drink[] item_Drink;
     [SerializeField] Item_Goods[] item_Goods;
     [SerializeField] Item_Medicine[] item_Medicine;
 
-
+    //아이템 구매패널 관련
     ItemBase currentItem;
     Image itemImage;
     TextMeshProUGUI itemInfoText;
@@ -44,10 +46,20 @@ public class ItemShopManager : MonoBehaviour
     TMP_InputField itemInputField;
     TextMeshProUGUI itemPriceText;
     int itemPrice;
-    int currentValue;
+    int currentItemCount;
     int currentItemPrice;
-
+    int maxitemCount;
     public Action<int> onChangedRemaining;
+
+
+    //업그레이드 패널 관련
+    GameObject upgradeItemPanel;
+    TextMeshProUGUI upgradePriceText;
+    TextMeshProUGUI upgradeNowSellPrice;
+    TextMeshProUGUI upgradeTooSellPrice;
+    TextMeshProUGUI upgradeNowSatisfaction;
+    TextMeshProUGUI upgradeTooSatisfaction;
+
 
     private void Awake()
     {
@@ -65,8 +77,9 @@ public class ItemShopManager : MonoBehaviour
         medicinePanel = Canvas.transform.GetChild(4).gameObject;
         ItemBuyPanel = Canvas.transform.GetChild(5).gameObject;
         RequirementPanel = Canvas.transform.GetChild(6).gameObject;
-
-        //아이템 구매창
+        LackMoneyImage = Canvas.transform.GetChild(7).gameObject;
+        lackMoneyButton = LackMoneyImage.GetComponentInChildren<Button>();
+        //아이템 구매패널
         Transform itemBuyTransform;
         itemBuyTransform = ItemBuyPanel.transform.GetChild(1).transform;
         itemImage = itemBuyTransform.GetChild(1).GetComponent<Image>();
@@ -75,19 +88,35 @@ public class ItemShopManager : MonoBehaviour
         itemInputField = itemBuyTransform.GetChild(4).GetComponent<TMP_InputField>();
         itemPriceText = itemBuyTransform.GetChild(5).GetComponentInChildren<TextMeshProUGUI>();
         itemInputField.onValueChanged.AddListener(UpdateBuyPanel);
+        itemScrollbar.onValueChanged.AddListener(UpdateBuyPanelBySlider);
 
-        //아이템 샵의 버튼들
+        //업그레이드패널
+        Transform UpgradeTransform = ItemBuyPanel.transform.GetChild(2).GetChild(0).transform;
+        upgradeItemPanel = ItemBuyPanel.transform.GetChild(2).gameObject;
+        upgradeNowSatisfaction = UpgradeTransform.GetChild(0).GetChild(3).GetComponent<TextMeshProUGUI>();
+        upgradeNowSellPrice = UpgradeTransform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
+        upgradeTooSatisfaction = UpgradeTransform.GetChild(1).GetChild(3).GetComponent<TextMeshProUGUI>();
+        upgradeTooSellPrice = UpgradeTransform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
+        upgradePriceText = UpgradeTransform.GetChild(2).GetComponent<TextMeshProUGUI>();
+
+        lackMoneyButton.onClick.AddListener(CloseLackMoneyImage);
+        //아이템 패널의 버튼들
         itemShopButtons[0].onClick.AddListener(GotoDessertPanel);
         itemShopButtons[1].onClick.AddListener(GotoDrinkPanel);
         itemShopButtons[2].onClick.AddListener(GotoGoodsPanel);
         itemShopButtons[3].onClick.AddListener(GotoMedicinePanel);
         itemShopButtons[4].onClick.AddListener(GotoNextDay);
 
-
-        //TODO:: 현재 아웃바운드 나옴
+        //아이템 구매 패널의 버튼들
+        itemBuyButtons[0].onClick.AddListener(BuyItem);
         itemBuyButtons[1].onClick.AddListener(CloseItemBuyPanel);
-        itemBuyButtons[2].onClick.AddListener(BuyItem);
-        //각 세부창들의 버튼들
+        itemBuyButtons[2].onClick.AddListener(OpenUpgradeItemPanel);
+
+        //업그레이드 패널의 버튼들
+        upgradeButtons[0].onClick.AddListener(UpgradeItem);
+        upgradeButtons[1].onClick.AddListener(CloseUpgradeItemPanel);
+
+        //각 세부 패널들의 버튼들
         foreach (Button dessertButton in dessertButtons)
         {
             dessertButton.onClick.AddListener(() => ShowItemOnBuyPanel(dessertButton));
@@ -302,6 +331,10 @@ public class ItemShopManager : MonoBehaviour
         itemShopInput.Enable();
     }
 
+    private void CloseLackMoneyImage()
+    {
+        LackMoneyImage.SetActive(false);
+    }
 
 
     private void GotoDessertPanel()
@@ -386,40 +419,77 @@ public class ItemShopManager : MonoBehaviour
     private void UpdateBuyPanel(ItemBase item)
     {
         currentItem = item;
+        currentItemCount = 0;
+        currentItemPrice = 0;
         ItemBuyPanel.SetActive(true);
         itemImage.sprite = item.Icon;
         itemInfoText.text = item.ItemInfo;
         itemPrice = item.purchasePrice;
         itemPriceText.text = $"{itemPrice} 원";
 
+        //열 때 최대치 정해놓기
+        maxitemCount = 0;
+        
+        while (player.Money >= currentItemPrice )
+        {
+            currentItemCount += 1;
+            currentItemPrice += itemPrice;
+            if(player.Money < currentItemPrice)
+            {
+                currentItemCount -= 1;
+                currentItemPrice -= itemPrice;
+                break;
+            }
+        }
+        maxitemCount = currentItemCount;
+        currentItemCount = 1;
+        currentItemPrice = itemPrice;
+        itemScrollbar.value = 0f;
+        itemInputField.text = "";
     }
 
     private void UpdateBuyPanel(string value)
     {
-        currentValue = int.Parse(value);
-         currentItemPrice = itemPrice * currentValue;
+        currentItemCount = int.Parse(value);
+         currentItemPrice = itemPrice * currentItemCount;
         //플레이어가 가진돈보다 가격이 높으면 작동
-        if (currentItemPrice > player.Money)
+        if (currentItemCount > maxitemCount)
         {
-            //플레이어가 가진 돈보다 낮아질 때 까지
-            while (player.Money <= currentItemPrice)
-            {
-                currentValue -= 1;
-                currentItemPrice -= itemPrice;
-            }
-            //낮아졌으면 적용
-            itemInputField.text = currentValue.ToString();
+            currentItemCount = maxitemCount;
+            itemInputField.text = maxitemCount.ToString();
         }
         itemPriceText.text = $"{currentItemPrice} 원";
-
+        itemInputField.text = $"{currentItemCount}";
+    }
+    private void UpdateBuyPanelBySlider(float value)
+    {
+        switch (maxitemCount)
+        {
+            case <= 10: itemScrollbar.size = 0.3f; break;
+            case <= 15: itemScrollbar.size = 0.27f; break;
+            case <= 20: itemScrollbar.size = 0.24f; break;
+            case <= 30: itemScrollbar.size = 0.2f; break;
+            case <= 50: itemScrollbar.size = 0.18f; break;
+            case >= 70: itemScrollbar.size = 0.15f; break;
+        }
+        int sliderValue = (int)(maxitemCount * value);
+        UpdateBuyPanel($"{sliderValue}");
     }
 
-    //---------------구매창에서 사고 닫기
+    //---------------구매창에서 사고 닫고,업그레이드
     private void BuyItem()
     {
-        currentItem.remaining += currentValue;
+        if(player.Money >= currentItemPrice)
+        {
         player.Money -= currentItemPrice;
+        currentItem.remaining += currentItemCount;
         onChangedRemaining?.Invoke(currentItem.remaining);
+        ItemBuyPanel.SetActive(false);
+        }
+        else
+        {
+            LackMoneyImage.SetActive(true);
+        }
     }
 
 
@@ -428,6 +498,41 @@ public class ItemShopManager : MonoBehaviour
         ItemBuyPanel.SetActive(false);
     }
 
+    private void OpenUpgradeItemPanel()
+    {
+        upgradeNowSellPrice.text = $"{currentItem.sellPrice}원";
+        upgradeNowSatisfaction.text = $"{currentItem.satisfaction}";
+
+        upgradeTooSellPrice.text = $"{currentItem.sellPrice + currentItem.sellPrice * currentItem.upgradeEfficiency}원";
+        upgradeTooSatisfaction.text = $"{(int)(currentItem.satisfaction + currentItem.satisfaction * currentItem.upgradeEfficiency * 2)}";
+        upgradePriceText.text = $"{currentItem.upgradePrice}원";
+        upgradeItemPanel.SetActive(true);
+
+    }
+
+    private void UpgradeItem()
+    {
+        if (player.Money >= currentItem.upgradePrice)
+        {
+            player.Money -= currentItem.upgradePrice;
+            currentItem.UpGrade();
+            CloseUpgradeItemPanel();
+        }
+        else
+        {
+            LackMoneyImage.SetActive(true);
+        }
+    }
+
+    private void CloseUpgradeItemPanel()
+    {
+        upgradeItemPanel.SetActive(false);
+    }
+
+    //private void CantUsingButton(ItemBase item)
+    //{
+    //    item.
+    //}
 
 
 }

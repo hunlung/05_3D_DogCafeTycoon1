@@ -23,12 +23,13 @@ public class ItemBase : ScriptableObject
     public int remaining;
     public int purchasePrice;
     public int sellPrice;
-    public int quantity;
     public int satisfaction;
 
     //업그레이드
     public int upgradePrice;
     public float upgradeEfficiency;
+    public bool upgradeRequirement;
+    public string requirementinfo;
     //설명
     public string ItemInfo;
 
