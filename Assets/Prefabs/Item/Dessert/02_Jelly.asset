@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18832757ec55bb449933bce0112fcb8, type: 3}
   m_Name: 02_Jelly
   m_EditorClassIdentifier: 
+  itemCode: 1
   ItemType: 2
   Icon: {fileID: 0}
   ItemName: "\uC824\uB9AC"
   remaining: 0
   purchasePrice: 700
-  sellPrice: 1200
+  sellPrice: 1500
+  quantity: 0
   satisfaction: 2
-  upgradePrice: 4200
+  upgradePrice: 5500
   upgradeEfficiency: 0.5
-  upgradeRequirement: 0
-  requirementinfo: 
   ItemInfo: "\uC2FC\uAC12\uC5D0 \uAC1C\uAECC\uB290\uB08C\uC744 \uB290\uB084 \uC218
     \uC788\uB294 \uC824\uB9AC"

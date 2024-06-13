@@ -12,15 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18832757ec55bb449933bce0112fcb8, type: 3}
   m_Name: 03_DogGum
   m_EditorClassIdentifier: 
+  itemCode: 2
   ItemType: 2
   Icon: {fileID: 0}
   ItemName: "\uAC1C\uAECC"
-  remaining: 0
   purchasePrice: 1800
   sellPrice: 4000
+  quantity: 0
   satisfaction: 5
   upgradePrice: 14500
   upgradeEfficiency: 0.5
-  upgradeRequirement: 0
-  requirementinfo: 
   ItemInfo: "\uC9C4\uC9DC \uAC1C\uAECC"
