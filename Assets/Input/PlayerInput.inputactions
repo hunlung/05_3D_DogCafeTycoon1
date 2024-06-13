@@ -303,9 +303,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "~",
+                    "name": "ReturnItemShop",
                     "type": "Button",
-                    "id": "e0ec1bd2-c97e-4d59-8964-dd580fcc307c",
+                    "id": "023479d2-80fa-489a-82bd-7690963d0a92",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -370,12 +370,12 @@
                 },
                 {
                     "name": "",
-                    "id": "465f55f1-f3d0-4bda-b4af-21278a273d75",
+                    "id": "01dfd59f-f618-45cc-a240-0bd4373de3b8",
                     "path": "<Keyboard>/backquote",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "~",
+                    "action": "ReturnItemShop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

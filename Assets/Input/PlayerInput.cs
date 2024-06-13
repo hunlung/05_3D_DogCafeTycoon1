@@ -323,6 +323,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ReturnItemShop"",
+                    ""type"": ""Button"",
+                    ""id"": ""023479d2-80fa-489a-82bd-7690963d0a92"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -380,6 +389,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""5"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""01dfd59f-f618-45cc-a240-0bd4373de3b8"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ReturnItemShop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -405,6 +425,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_ItemShop__3 = m_ItemShop.FindAction("3", throwIfNotFound: true);
         m_ItemShop__4 = m_ItemShop.FindAction("4", throwIfNotFound: true);
         m_ItemShop__5 = m_ItemShop.FindAction("5", throwIfNotFound: true);
+        m_ItemShop_ReturnItemShop = m_ItemShop.FindAction("ReturnItemShop", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -589,6 +610,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_ItemShop__3;
     private readonly InputAction m_ItemShop__4;
     private readonly InputAction m_ItemShop__5;
+    private readonly InputAction m_ItemShop_ReturnItemShop;
     public struct ItemShopActions
     {
         private @PlayerInput m_Wrapper;
@@ -598,6 +620,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @_3 => m_Wrapper.m_ItemShop__3;
         public InputAction @_4 => m_Wrapper.m_ItemShop__4;
         public InputAction @_5 => m_Wrapper.m_ItemShop__5;
+        public InputAction @ReturnItemShop => m_Wrapper.m_ItemShop_ReturnItemShop;
         public InputActionMap Get() { return m_Wrapper.m_ItemShop; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -622,6 +645,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @_5.started += instance.On_5;
             @_5.performed += instance.On_5;
             @_5.canceled += instance.On_5;
+            @ReturnItemShop.started += instance.OnReturnItemShop;
+            @ReturnItemShop.performed += instance.OnReturnItemShop;
+            @ReturnItemShop.canceled += instance.OnReturnItemShop;
         }
 
         private void UnregisterCallbacks(IItemShopActions instance)
@@ -641,6 +667,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @_5.started -= instance.On_5;
             @_5.performed -= instance.On_5;
             @_5.canceled -= instance.On_5;
+            @ReturnItemShop.started -= instance.OnReturnItemShop;
+            @ReturnItemShop.performed -= instance.OnReturnItemShop;
+            @ReturnItemShop.canceled -= instance.OnReturnItemShop;
         }
 
         public void RemoveCallbacks(IItemShopActions instance)
@@ -678,5 +707,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void On_3(InputAction.CallbackContext context);
         void On_4(InputAction.CallbackContext context);
         void On_5(InputAction.CallbackContext context);
+        void OnReturnItemShop(InputAction.CallbackContext context);
     }
 }
