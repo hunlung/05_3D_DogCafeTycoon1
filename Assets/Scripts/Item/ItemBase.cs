@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum ItemType : byte
 {
@@ -28,8 +29,11 @@ public class ItemBase : ScriptableObject
     //업그레이드
     public int upgradePrice;
     public float upgradeEfficiency;
-    public bool upgradeRequirement;
+    
+    //구매 조건
+    public bool itemCantBuy;
     public string requirementinfo;
+    
     //설명
     public string ItemInfo;
 

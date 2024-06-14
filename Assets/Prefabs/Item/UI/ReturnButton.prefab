@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "~ \uC774\uC804\uBA54\uB274\uB85C \uC774\uB3D9"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7ee04d8068a41d94c9de99e860794208, type: 2}
-  m_sharedMaterial: {fileID: 3939324926400356737, guid: 7ee04d8068a41d94c9de99e860794208, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8ec5d32a8971ae1499db886219f2a90b, type: 2}
+  m_sharedMaterial: {fileID: -5100429183209634272, guid: 8ec5d32a8971ae1499db886219f2a90b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 3119864201506383544}
   m_Layer: 5
   m_Name: ReturnButton
-  m_TagString: Untagged
+  m_TagString: ReturnButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -221,7 +221,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3119864201506383544}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []

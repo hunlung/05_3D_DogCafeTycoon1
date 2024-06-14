@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf3a9919ae3706a43ad082852545f039, type: 3}
   m_Name: 04_Water
   m_EditorClassIdentifier: 
-  itemCode: 3
   ItemType: 1
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 109341e90b1b20a43937018956c3e864, type: 3}
   ItemName: "\uBB3C"
+  remaining: 0
   purchasePrice: 500
   sellPrice: 800
-  quantity: 0
   satisfaction: 4
   upgradePrice: 5000
   upgradeEfficiency: 0.1
-  ItemInfo: "\uBBF8\uB124\uB784\uC774 \uD48D\uBD80\uD55C \uBB3C,\uC5D0\uBE44\uC559
-    \uB9C8\uC744\uC5D0\uC11C \uD37C\uC654\uB2E4\uB098 \uBB50\uB77C\uB098"
+  upgradeRequirement: 0
+  requirementinfo: 
+  ItemInfo: "\uBBF8\uB124\uB784\uC774 \uD48D\uBD80\uD55C \uBB3C,\uC5D0X\uC559"

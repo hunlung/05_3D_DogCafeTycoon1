@@ -30,7 +30,7 @@ public class ItemShopManager : MonoBehaviour
     GameObject goodsPanel;
     GameObject medicinePanel;
     GameObject ItemBuyPanel;
-    GameObject RequirementPanel;
+    GameObject requirementPanel;
     GameObject LackMoneyImage;
 
     [SerializeField] Item_Dessert[] item_Dessert;
@@ -51,7 +51,9 @@ public class ItemShopManager : MonoBehaviour
     int maxitemCount;
     public Action<int> onChangedRemaining;
 
-
+    //구매 조건 텍스트
+    TextMeshProUGUI requirementText;
+    
     //업그레이드 패널 관련
     GameObject upgradeItemPanel;
     TextMeshProUGUI upgradePriceText;
@@ -76,7 +78,7 @@ public class ItemShopManager : MonoBehaviour
         goodsPanel = Canvas.transform.GetChild(3).gameObject;
         medicinePanel = Canvas.transform.GetChild(4).gameObject;
         ItemBuyPanel = Canvas.transform.GetChild(5).gameObject;
-        RequirementPanel = Canvas.transform.GetChild(6).gameObject;
+        requirementPanel = Canvas.transform.GetChild(6).gameObject;
         LackMoneyImage = Canvas.transform.GetChild(7).gameObject;
         lackMoneyButton = LackMoneyImage.GetComponentInChildren<Button>();
         //아이템 구매패널
@@ -87,9 +89,11 @@ public class ItemShopManager : MonoBehaviour
         itemScrollbar = itemBuyTransform.GetChild(3).GetComponent<Scrollbar>();
         itemInputField = itemBuyTransform.GetChild(4).GetComponent<TMP_InputField>();
         itemPriceText = itemBuyTransform.GetChild(5).GetComponentInChildren<TextMeshProUGUI>();
-        itemInputField.onValueChanged.AddListener(UpdateBuyPanel);
+        itemInputField.onValueChanged.AddListener(UpdateBuyPanelByInput);
         itemScrollbar.onValueChanged.AddListener(UpdateBuyPanelBySlider);
 
+        //조건 텍스트
+        requirementText = requirementPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         //업그레이드패널
         Transform UpgradeTransform = ItemBuyPanel.transform.GetChild(2).GetChild(0).transform;
         upgradeItemPanel = ItemBuyPanel.transform.GetChild(2).gameObject;
@@ -115,6 +119,9 @@ public class ItemShopManager : MonoBehaviour
         //업그레이드 패널의 버튼들
         upgradeButtons[0].onClick.AddListener(UpgradeItem);
         upgradeButtons[1].onClick.AddListener(CloseUpgradeItemPanel);
+
+        //조건 패널 버튼
+        requirementButton.onClick.AddListener(OffRequirementPanel);
 
         //각 세부 패널들의 버튼들
         foreach (Button dessertButton in dessertButtons)
@@ -159,8 +166,10 @@ public class ItemShopManager : MonoBehaviour
         itemShopInput.ItemShop._3.performed += PressThreeButton;
         itemShopInput.ItemShop._4.performed += PressFourButton;
         itemShopInput.ItemShop._5.performed += PressFiveButton;
+        itemShopInput.ItemShop.ReturnItemShop.performed += ReturnItemShop;
 
     }
+
 
 
     private void OnDisable()
@@ -170,6 +179,7 @@ public class ItemShopManager : MonoBehaviour
         itemShopInput.ItemShop._3.performed -= PressThreeButton;
         itemShopInput.ItemShop._4.performed -= PressFourButton;
         itemShopInput.ItemShop._5.performed -= PressFiveButton;
+        itemShopInput.ItemShop.ReturnItemShop.performed -= ReturnItemShop;
         itemShopInput.Disable();
     }
 
@@ -323,7 +333,22 @@ public class ItemShopManager : MonoBehaviour
         }
     }
 
-
+    private void ReturnItemShop(InputAction.CallbackContext context)
+    {
+        if (!ItemShopPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        {
+            Button returnbutton = GameObject.FindGameObjectWithTag("ReturnButton").GetComponent<Button>();
+            GotoItemShop(returnbutton);
+        }
+        else if (upgradeItemPanel.activeSelf)
+        {
+            upgradeItemPanel.SetActive(false);
+        }
+        else if (ItemBuyPanel.activeSelf)
+        {
+            ItemBuyPanel.SetActive(false);
+        }
+    }
 
     public void PrepareStore()
     {
@@ -418,6 +443,9 @@ public class ItemShopManager : MonoBehaviour
     /// <param name="item"></param>
     private void UpdateBuyPanel(ItemBase item)
     {
+        if (!item.itemCantBuy)
+        {
+
         currentItem = item;
         currentItemCount = 0;
         currentItemPrice = 0;
@@ -429,12 +457,12 @@ public class ItemShopManager : MonoBehaviour
 
         //열 때 최대치 정해놓기
         maxitemCount = 0;
-        
-        while (player.Money >= currentItemPrice )
+
+        while (player.Money >= currentItemPrice)
         {
             currentItemCount += 1;
             currentItemPrice += itemPrice;
-            if(player.Money < currentItemPrice)
+            if (player.Money < currentItemPrice)
             {
                 currentItemCount -= 1;
                 currentItemPrice -= itemPrice;
@@ -446,12 +474,23 @@ public class ItemShopManager : MonoBehaviour
         currentItemPrice = itemPrice;
         itemScrollbar.value = 0f;
         itemInputField.text = "";
+        }
+        //조건 불충족 시
+        else
+        {
+            requirementPanel.SetActive(true);
+            requirementText.text = item.requirementinfo;
+        }
+    }
+    private void OffRequirementPanel()
+    {
+        requirementPanel.SetActive(false);
     }
 
-    private void UpdateBuyPanel(string value)
+    private void UpdateBuyPanelByInput(string value)
     {
         currentItemCount = int.Parse(value);
-         currentItemPrice = itemPrice * currentItemCount;
+        currentItemPrice = itemPrice * currentItemCount;
         //플레이어가 가진돈보다 가격이 높으면 작동
         if (currentItemCount > maxitemCount)
         {
@@ -473,18 +512,18 @@ public class ItemShopManager : MonoBehaviour
             case >= 70: itemScrollbar.size = 0.15f; break;
         }
         int sliderValue = (int)(maxitemCount * value);
-        UpdateBuyPanel($"{sliderValue}");
+        UpdateBuyPanelByInput($"{sliderValue}");
     }
 
     //---------------구매창에서 사고 닫고,업그레이드
     private void BuyItem()
     {
-        if(player.Money >= currentItemPrice)
+        if (player.Money >= currentItemPrice)
         {
-        player.Money -= currentItemPrice;
-        currentItem.remaining += currentItemCount;
-        onChangedRemaining?.Invoke(currentItem.remaining);
-        ItemBuyPanel.SetActive(false);
+            player.Money -= currentItemPrice;
+            currentItem.remaining += currentItemCount;
+            onChangedRemaining?.Invoke(currentItem.remaining);
+            ItemBuyPanel.SetActive(false);
         }
         else
         {

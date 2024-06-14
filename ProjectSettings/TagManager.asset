@@ -3,7 +3,20 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Canvas
+  - GoodsPanel
+  - ItemShop
+  - RequirementItemPanel
+  - DrinkPanel
+  - MedicinePanel
+  - ItemBuySellPanel
+  - DessertPanel
+  - CurrentSpeedImage
+  - GameSpeedButton
+  - Boundary
+  - ReturnButton
+  - CantUseItem
   layers:
   - Default
   - TransparentFX
