@@ -31,7 +31,7 @@ public class ItemShopManager : MonoBehaviour
     GameObject medicinePanel;
     GameObject ItemBuyPanel;
     GameObject requirementPanel;
-    GameObject LackMoneyImage;
+    GameObject lackMoneyImage;
 
     [SerializeField] Item_Dessert[] item_Dessert;
     [SerializeField] Item_Drink[] item_Drink;
@@ -48,7 +48,7 @@ public class ItemShopManager : MonoBehaviour
     int itemPrice;
     int currentItemCount;
     int currentItemPrice;
-    int maxitemCount;
+    int maxItemCount;
     public Action<int> onChangedRemaining;
 
     //구매 조건 텍스트
@@ -62,6 +62,9 @@ public class ItemShopManager : MonoBehaviour
     TextMeshProUGUI upgradeNowSatisfaction;
     TextMeshProUGUI upgradeTooSatisfaction;
 
+    //스크롤바
+    private const float MinScrollbarSize = 0.15f;
+    private const float MaxScrollbarSize = 0.3f;
 
     private void Awake()
     {
@@ -71,6 +74,13 @@ public class ItemShopManager : MonoBehaviour
     private void Start()
     {
         player = GameManager.Instance.Player;
+        SetupUI();
+        SetupButtonListeners();
+    }
+
+
+    private void SetupUI()
+    {
         GameObject Canvas = GameObject.FindGameObjectWithTag("Canvas");
         ItemShopPanel = Canvas.transform.GetChild(0).gameObject;
         dessertPanel = Canvas.transform.GetChild(1).gameObject;
@@ -79,8 +89,8 @@ public class ItemShopManager : MonoBehaviour
         medicinePanel = Canvas.transform.GetChild(4).gameObject;
         ItemBuyPanel = Canvas.transform.GetChild(5).gameObject;
         requirementPanel = Canvas.transform.GetChild(6).gameObject;
-        LackMoneyImage = Canvas.transform.GetChild(7).gameObject;
-        lackMoneyButton = LackMoneyImage.GetComponentInChildren<Button>();
+        lackMoneyImage = Canvas.transform.GetChild(7).gameObject;
+        lackMoneyButton = lackMoneyImage.GetComponentInChildren<Button>();
         //아이템 구매패널
         Transform itemBuyTransform;
         itemBuyTransform = ItemBuyPanel.transform.GetChild(1).transform;
@@ -102,7 +112,10 @@ public class ItemShopManager : MonoBehaviour
         upgradeTooSatisfaction = UpgradeTransform.GetChild(1).GetChild(3).GetComponent<TextMeshProUGUI>();
         upgradeTooSellPrice = UpgradeTransform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
         upgradePriceText = UpgradeTransform.GetChild(2).GetComponent<TextMeshProUGUI>();
+    }
 
+    private void SetupButtonListeners()
+    {
         lackMoneyButton.onClick.AddListener(CloseLackMoneyImage);
         //아이템 패널의 버튼들
         itemShopButtons[0].onClick.AddListener(GotoDessertPanel);
@@ -124,26 +137,29 @@ public class ItemShopManager : MonoBehaviour
         requirementButton.onClick.AddListener(OffRequirementPanel);
 
         //각 세부 패널들의 버튼들
-        foreach (Button dessertButton in dessertButtons)
+        for (int i = 0; i < dessertButtons.Length; i++)
         {
-            dessertButton.onClick.AddListener(() => ShowItemOnBuyPanel(dessertButton));
+            int index = i;
+            dessertButtons[i].onClick.AddListener(() => ShowItemOnBuyPanel<Item_Dessert>(index));
         }
 
-        foreach (Button drinkButton in drinkButtons)
+        for (int i = 0; i < drinkButtons.Length; i++)
         {
-            drinkButton.onClick.AddListener(() => ShowItemOnBuyPanel(drinkButton));
+            int index = i;
+            drinkButtons[i].onClick.AddListener(() => ShowItemOnBuyPanel<Item_Drink>(index));
         }
 
-        foreach (Button goodsButton in goodsButtons)
+        for (int i = 0; i < goodsButtons.Length; i++)
         {
-            goodsButton.onClick.AddListener(() => ShowItemOnBuyPanel(goodsButton));
+            int index = i;
+            goodsButtons[i].onClick.AddListener(() => ShowItemOnBuyPanel<Item_Goods>(index));
         }
 
-        foreach (Button medicineButton in medicineButtons)
+        for (int i = 0; i < medicineButtons.Length; i++)
         {
-            medicineButton.onClick.AddListener(() => ShowItemOnBuyPanel(medicineButton));
+            int index = i;
+            medicineButtons[i].onClick.AddListener(() => ShowItemOnBuyPanel<Item_Medicine>(index));
         }
-
 
         //아이템 샵으로 돌아가는 리턴 버튼들
         foreach (Button returnButton in returnButtons)
@@ -151,14 +167,10 @@ public class ItemShopManager : MonoBehaviour
             returnButton.onClick.AddListener(() => GotoItemShop(returnButton));
         }
 
-
-
-
     }
 
 
-
-    private void OnEnable()
+        private void OnEnable()
     {
         itemShopInput.Enable();
         itemShopInput.ItemShop._1.performed += PressOneButton;
@@ -186,156 +198,130 @@ public class ItemShopManager : MonoBehaviour
 
     // -----------------아이템샵의 번호에 적힌 숫자를 누르면 해당 버튼을 누르는 함수들
 
-    private void PressOneButton(InputAction.CallbackContext context)
+
+private void PressOneButton(InputAction.CallbackContext context)
+{
+    if (ItemShopPanel.activeSelf && !ItemBuyPanel.activeSelf)
     {
-        if (ItemShopPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
-        {
-            ItemShopPanel.gameObject.SetActive(false);
-            GotoDessertPanel();
-        }
-        else if (dessertPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
-        {
-            if (dessertButtons[0] != null)
-                ShowItemOnBuyPanel(dessertButtons[0]);
-        }
-        else if (drinkPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
-        {
-            if (drinkButtons[0] != null)
-                ShowItemOnBuyPanel(drinkButtons[0]);
-        }
-        else if (goodsPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
-        {
-            if (goodsButtons[0] != null)
-                ShowItemOnBuyPanel(goodsButtons[0]);
-        }
-        else if (medicinePanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
-        {
-            if (medicineButtons[0] != null)
-                ShowItemOnBuyPanel(medicineButtons[0]);
-
-        }
-
+        ItemShopPanel.SetActive(false);
+        GotoDessertPanel();
     }
+    else if (dessertPanel.activeSelf && !ItemBuyPanel.activeSelf)
+    {
+        ShowItemOnBuyPanel<Item_Dessert>(0);
+    }
+    else if (drinkPanel.activeSelf && !ItemBuyPanel.activeSelf)
+    {
+        ShowItemOnBuyPanel<Item_Drink>(0);
+    }
+    else if (goodsPanel.activeSelf && !ItemBuyPanel.activeSelf)
+    {
+        ShowItemOnBuyPanel<Item_Goods>(0);
+    }
+    else if (medicinePanel.activeSelf && !ItemBuyPanel.activeSelf)
+    {
+        ShowItemOnBuyPanel<Item_Medicine>(0);
+    }
+}
 
     private void PressTwoButton(InputAction.CallbackContext context)
     {
-        if (ItemShopPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        if (ItemShopPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            ItemShopPanel.gameObject.SetActive(false);
+            ItemShopPanel.SetActive(false);
             GotoDrinkPanel();
         }
-        else if (dessertPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (dessertPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (dessertButtons[1] != null)
-                ShowItemOnBuyPanel(dessertButtons[1]);
+            ShowItemOnBuyPanel<Item_Dessert>(1);
         }
-        else if (drinkPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (drinkPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (drinkButtons[1] != null)
-                ShowItemOnBuyPanel(drinkButtons[1]);
+            ShowItemOnBuyPanel<Item_Drink>(1);
         }
-        else if (goodsPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (goodsPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (goodsButtons[1] != null)
-                ShowItemOnBuyPanel(goodsButtons[1]);
+                ShowItemOnBuyPanel<Item_Goods>(1);
         }
-        else if (medicinePanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (medicinePanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (medicineButtons[1] != null)
-                ShowItemOnBuyPanel(medicineButtons[1]);
-
+            ShowItemOnBuyPanel<Item_Medicine>(1);
         }
     }
 
 
     private void PressThreeButton(InputAction.CallbackContext context)
     {
-        if (ItemShopPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        if (ItemShopPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            ItemShopPanel.gameObject.SetActive(false);
+            ItemShopPanel.SetActive(false);
             GotoGoodsPanel();
         }
-        else if (dessertPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (dessertPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (dessertButtons[2] != null)
-                ShowItemOnBuyPanel(dessertButtons[2]);
+            ShowItemOnBuyPanel<Item_Dessert>(2);
         }
-        else if (drinkPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (drinkPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (drinkButtons[2] != null)
-                ShowItemOnBuyPanel(drinkButtons[2]);
+            ShowItemOnBuyPanel<Item_Drink>(2);
         }
-        else if (goodsPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (goodsPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (goodsButtons[2] != null)
-                ShowItemOnBuyPanel(goodsButtons[2]);
+            ShowItemOnBuyPanel<Item_Goods>(2);
         }
-        else if (medicinePanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (medicinePanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (medicineButtons[2] != null)
-                ShowItemOnBuyPanel(medicineButtons[2]);
-
-        };
+            ShowItemOnBuyPanel<Item_Medicine>(2);
+        }
     }
 
     private void PressFourButton(InputAction.CallbackContext context)
     {
-        if (ItemShopPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        if (ItemShopPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            ItemShopPanel.gameObject.SetActive(false);
+            ItemShopPanel.SetActive(false);
             GotoMedicinePanel();
         }
-        else if (dessertPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (dessertPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (dessertButtons[3] != null)
-                ShowItemOnBuyPanel(dessertButtons[3]);
+            ShowItemOnBuyPanel<Item_Dessert>(3);
         }
-        else if (drinkPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (drinkPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (drinkButtons[3] != null)
-                ShowItemOnBuyPanel(drinkButtons[3]);
+            ShowItemOnBuyPanel<Item_Drink>(3);
         }
-        else if (goodsPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (goodsPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (goodsButtons[3] != null)
-                ShowItemOnBuyPanel(goodsButtons[3]);
+            ShowItemOnBuyPanel<Item_Goods>(3);
         }
-        else if (medicinePanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (medicinePanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (medicineButtons[3] != null)
-                ShowItemOnBuyPanel(medicineButtons[3]);
-
+            ShowItemOnBuyPanel<Item_Medicine>(3);
         }
     }
     private void PressFiveButton(InputAction.CallbackContext context)
     {
-
-        if (dessertPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        if (dessertPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (dessertButtons[4] != null)
-                ShowItemOnBuyPanel(dessertButtons[4]);
+            ShowItemOnBuyPanel<Item_Dessert>(4);
         }
-        else if (drinkPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (drinkPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (drinkButtons[4] != null)
-                ShowItemOnBuyPanel(drinkButtons[4]);
+            ShowItemOnBuyPanel<Item_Drink>(4);
         }
-        else if (goodsPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (goodsPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (goodsButtons[4] != null)
-                ShowItemOnBuyPanel(goodsButtons[4]);
+            ShowItemOnBuyPanel<Item_Goods>(4);
         }
-        else if (medicinePanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        else if (medicinePanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-            if (medicineButtons[4] != null)
-                ShowItemOnBuyPanel(medicineButtons[4]);
-
+            ShowItemOnBuyPanel<Item_Medicine>(4);
         }
     }
 
     private void ReturnItemShop(InputAction.CallbackContext context)
     {
-        if (!ItemShopPanel.gameObject.activeSelf && !ItemBuyPanel.activeSelf)
+        if (!ItemShopPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
             Button returnbutton = GameObject.FindGameObjectWithTag("ReturnButton").GetComponent<Button>();
             GotoItemShop(returnbutton);
@@ -358,7 +344,7 @@ public class ItemShopManager : MonoBehaviour
 
     private void CloseLackMoneyImage()
     {
-        LackMoneyImage.SetActive(false);
+        lackMoneyImage.SetActive(false);
     }
 
 
@@ -395,55 +381,23 @@ public class ItemShopManager : MonoBehaviour
         ItemShopPanel.SetActive(true);
     }
 
-    private void ShowItemOnBuyPanel(Button itemButton)
+    private void ShowItemOnBuyPanel<T>(int index) where T : ItemBase
     {
-        if (itemButton != null)
+        ItemBase item = ItemManager.Instance.GetItemByIndex<T >(index);
+        if (item != null)
         {
-            if (dessertButtons.Contains(itemButton))
-            {
-                int index = System.Array.IndexOf(dessertButtons, itemButton);
-                if (index >= 0 && index < item_Dessert.Length)
-                {
-                    Item_Dessert selectedItem = item_Dessert[index];
-                    UpdateBuyPanel(selectedItem);
-                }
-            }
-            else if (drinkButtons.Contains(itemButton))
-            {
-                int index = System.Array.IndexOf(drinkButtons, itemButton);
-                if (index >= 0 && index < item_Drink.Length)
-                {
-                    Item_Drink selectedItem = item_Drink[index];
-                    UpdateBuyPanel(selectedItem);
-                }
-            }
-            else if (goodsButtons.Contains(itemButton))
-            {
-                int index = System.Array.IndexOf(goodsButtons, itemButton);
-                if (index >= 0 && index < item_Goods.Length)
-                {
-                    Item_Goods selectedItem = item_Goods[index];
-                    UpdateBuyPanel(selectedItem);
-                }
-            }
-            else if (medicineButtons.Contains(itemButton))
-            {
-                int index = System.Array.IndexOf(medicineButtons, itemButton);
-                if (index >= 0 && index < item_Medicine.Length)
-                {
-                    Item_Medicine selectedItem = item_Medicine[index];
-                    UpdateBuyPanel(selectedItem);
-                }
-            }
+            UpdateBuyPanel(item);
         }
     }
+
+
     /// <summary>
     /// 아이템구매창 업데이트
     /// </summary>
     /// <param name="item"></param>
     private void UpdateBuyPanel(ItemBase item)
     {
-        if (!item.itemCantBuy)
+        if (!item.itemCantBuy && !requirementPanel.activeSelf)
         {
 
         currentItem = item;
@@ -456,7 +410,7 @@ public class ItemShopManager : MonoBehaviour
         itemPriceText.text = $"{itemPrice} 원";
 
         //열 때 최대치 정해놓기
-        maxitemCount = 0;
+        maxItemCount = 0;
 
         while (player.Money >= currentItemPrice)
         {
@@ -469,14 +423,14 @@ public class ItemShopManager : MonoBehaviour
                 break;
             }
         }
-        maxitemCount = currentItemCount;
+        maxItemCount = currentItemCount;
         currentItemCount = 1;
         currentItemPrice = itemPrice;
         itemScrollbar.value = 0f;
         itemInputField.text = "";
         }
-        //조건 불충족 시
-        else
+        //조건 불충족 및 조건 패널이 닫혀있을 때
+        else if(item.itemCantBuy && !requirementPanel.activeSelf)
         {
             requirementPanel.SetActive(true);
             requirementText.text = item.requirementinfo;
@@ -487,32 +441,29 @@ public class ItemShopManager : MonoBehaviour
         requirementPanel.SetActive(false);
     }
 
+    // 인풋필드로 아이템 개수 변환
     private void UpdateBuyPanelByInput(string value)
     {
         currentItemCount = int.Parse(value);
         currentItemPrice = itemPrice * currentItemCount;
         //플레이어가 가진돈보다 가격이 높으면 작동
-        if (currentItemCount > maxitemCount)
+        if (currentItemCount > maxItemCount)
         {
-            currentItemCount = maxitemCount;
-            itemInputField.text = maxitemCount.ToString();
+            currentItemCount = maxItemCount;
+            itemInputField.text = maxItemCount.ToString();
         }
         itemPriceText.text = $"{currentItemPrice} 원";
         itemInputField.text = $"{currentItemCount}";
     }
+
+    //슬라이더로 슬라이더 크기 및 개수 변환
     private void UpdateBuyPanelBySlider(float value)
     {
-        switch (maxitemCount)
-        {
-            case <= 10: itemScrollbar.size = 0.3f; break;
-            case <= 15: itemScrollbar.size = 0.27f; break;
-            case <= 20: itemScrollbar.size = 0.24f; break;
-            case <= 30: itemScrollbar.size = 0.2f; break;
-            case <= 50: itemScrollbar.size = 0.18f; break;
-            case >= 70: itemScrollbar.size = 0.15f; break;
-        }
-        int sliderValue = (int)(maxitemCount * value);
-        UpdateBuyPanelByInput($"{sliderValue}");
+        float scrollbarSize = Mathf.Lerp(MaxScrollbarSize, MinScrollbarSize, (float)maxItemCount / 70f);
+        itemScrollbar.size = scrollbarSize;
+
+        int sliderValue = Mathf.RoundToInt(maxItemCount * value);
+        UpdateBuyPanelByInput(sliderValue.ToString());
     }
 
     //---------------구매창에서 사고 닫고,업그레이드
@@ -527,7 +478,7 @@ public class ItemShopManager : MonoBehaviour
         }
         else
         {
-            LackMoneyImage.SetActive(true);
+            lackMoneyImage.SetActive(true);
         }
     }
 
@@ -559,7 +510,7 @@ public class ItemShopManager : MonoBehaviour
         }
         else
         {
-            LackMoneyImage.SetActive(true);
+            lackMoneyImage.SetActive(true);
         }
     }
 
@@ -568,10 +519,6 @@ public class ItemShopManager : MonoBehaviour
         upgradeItemPanel.SetActive(false);
     }
 
-    //private void CantUsingButton(ItemBase item)
-    //{
-    //    item.
-    //}
 
 
 }

@@ -14,6 +14,9 @@ public class GameManager : Singleton<GameManager>
     ItemShopManager itemShopManager;
     public ItemShopManager ItemShopManager => itemShopManager;
 
+    ItemManager itemManager;
+    public ItemManager ItemManager => itemManager;
+
     PlayerControll playerControll;
 
     protected override void OnInitialize()
@@ -21,7 +24,8 @@ public class GameManager : Singleton<GameManager>
         player = FindAnyObjectByType<Player>();
         timeManager = transform.GetChild(0).GetComponent<TimeManager>();
         itemShopManager = transform.GetChild(1).GetComponent<ItemShopManager>();
-         playerControll = player.GetComponent<PlayerControll>();
+        itemManager = transform.GetChild(2).GetComponent<ItemManager>();
+        playerControll = player.GetComponent<PlayerControll>();
     }
 
 

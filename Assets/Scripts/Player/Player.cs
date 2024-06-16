@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
+    private int previousMoney;
     private int money;
     public int Money
     {
@@ -14,13 +14,15 @@ public class Player : MonoBehaviour
         {
             if (money != value)
             {
+                previousMoney = money;
                 money = value;
-                OnMoneyChange?.Invoke(money);
+                int diff = money - previousMoney; // 돈의 변화량 계산
+                OnMoneyChange?.Invoke(money, diff);
             }
         }
     }
 
-    public Action<int> OnMoneyChange;
+    public Action<int,int> OnMoneyChange;
 
     private void Start()
     {

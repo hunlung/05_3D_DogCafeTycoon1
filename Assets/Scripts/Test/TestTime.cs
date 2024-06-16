@@ -34,7 +34,12 @@ public class TestTime : TestBase
 
     protected override void Ontest4(InputAction.CallbackContext context)
     {
-        player.Money += 500;
+        player.Money += Random.Range(0, 500);
+    }
+
+    protected override void Ontest5(InputAction.CallbackContext context)
+    {
+        player.Money -= Random.Range(0, 500);
     }
 
 }
