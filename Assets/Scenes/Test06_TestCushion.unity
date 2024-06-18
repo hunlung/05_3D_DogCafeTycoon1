@@ -10448,6 +10448,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: ColorImages.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: colorImages.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
       propertyPath: item_Dessert.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -10484,6 +10492,50 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: ColorImages.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: e73f479e1b79c134ab3ed026c7b016cb, type: 3}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: ColorImages.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 25e4ea1f9bb1d464f8b28c04575670ef, type: 3}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: ColorImages.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: b59e440619f4c5e4389e0266ce893dda, type: 3}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: ColorImages.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 76d4f7dd3d98b0440b9d55676c6cf62e, type: 3}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: ColorImages.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 37da93c415935e84e8d7be8932d3c3a8, type: 3}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: colorImages.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: e73f479e1b79c134ab3ed026c7b016cb, type: 3}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: colorImages.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 25e4ea1f9bb1d464f8b28c04575670ef, type: 3}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: colorImages.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: b59e440619f4c5e4389e0266ce893dda, type: 3}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: colorImages.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 76d4f7dd3d98b0440b9d55676c6cf62e, type: 3}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: colorImages.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: 37da93c415935e84e8d7be8932d3c3a8, type: 3}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: funitureImages.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
       propertyPath: itemBuyButtons.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -10512,6 +10564,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 924518889}
     - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureImages.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
       propertyPath: goodsButtons.Array.data[0]
       value: 
       objectReference: {fileID: 1963849961}
@@ -10539,6 +10595,14 @@ PrefabInstance:
       propertyPath: item_Dessert.Array.data[4]
       value: 
       objectReference: {fileID: 11400000, guid: 6b213fd3d2074e0468aa008b62961596, type: 2}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: decorationImages.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureButtons.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
       propertyPath: item_Medicine.Array.data[0]
       value: 
@@ -10584,6 +10648,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 752108379}
     - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: funitureImages.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 093ef4d392b279548ae88ad9717e0f28, type: 3}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: funitureImages.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 915057dd9c1454c449deaf28bbbe2283, type: 3}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
       propertyPath: itemBuyButtons.Array.data[0]
       value: 
       objectReference: {fileID: 806002935}
@@ -10603,6 +10675,14 @@ PrefabInstance:
       propertyPath: upgradeButtons.Array.data[1]
       value: 
       objectReference: {fileID: 1327553847}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureImages.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 093ef4d392b279548ae88ad9717e0f28, type: 3}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureImages.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 915057dd9c1454c449deaf28bbbe2283, type: 3}
     - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
       propertyPath: itemShopButtons.Array.data[0]
       value: 
@@ -10632,6 +10712,34 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 79924901}
     - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1383345131}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureButtons.Array.data[1]
+      value: 
+      objectReference: {fileID: 398355121}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureButtons.Array.data[2]
+      value: 
+      objectReference: {fileID: 1339757157}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureButtons.Array.data[3]
+      value: 
+      objectReference: {fileID: 657571910}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureButtons.Array.data[4]
+      value: 
+      objectReference: {fileID: 1463658854}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureDownButtons.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureLeftButtons.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
       propertyPath: itemBuySellButtons.Array.data[0]
       value: 
       objectReference: {fileID: 806002935}
@@ -10639,6 +10747,38 @@ PrefabInstance:
       propertyPath: itemBuySellButtons.Array.data[1]
       value: 
       objectReference: {fileID: 1409893297}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureDownButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1383345131}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureDownButtons.Array.data[1]
+      value: 
+      objectReference: {fileID: 398355121}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureDownButtons.Array.data[2]
+      value: 
+      objectReference: {fileID: 1339757157}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureDownButtons.Array.data[3]
+      value: 
+      objectReference: {fileID: 657571910}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureDownButtons.Array.data[4]
+      value: 
+      objectReference: {fileID: 1463658854}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureLeftButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 675333754}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureLeftButtons.Array.data[1]
+      value: 
+      objectReference: {fileID: 939130556}
+    - target: {fileID: 7219439999410922661, guid: d737c4b536b1c464c8ecd65fc9c86b22, type: 3}
+      propertyPath: furnitureLeftButtons.Array.data[2]
+      value: 
+      objectReference: {fileID: 1185321747}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

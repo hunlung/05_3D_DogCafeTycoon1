@@ -23,7 +23,8 @@ public class ItemShopManager : MonoBehaviour
     [SerializeField] Button requirementButton;
     [SerializeField] Button[] upgradeButtons;
     Button lackMoneyButton;
-    [SerializeField] Button[] furnitureButtons;
+    [SerializeField] Button[] furnitureDownButtons;
+    [SerializeField] Button[] furnitureLeftButtons;
 
     GameObject ItemShopPanel;
     GameObject dessertPanel;
@@ -66,9 +67,14 @@ public class ItemShopManager : MonoBehaviour
     private const float MinScrollbarSize = 0.15f;
     private const float MaxScrollbarSize = 0.3f;
 
-    //가구상점 TODO:: 이미지를 바꾸는 것과 같은 StoreFurnitrue을 여러개 만들어놓고 켜고끄는것 비교해보기
+    //가구상점 
     private GameObject storeFurniturePanel;
     private Image[] storeFurnitureImages;
+    [Header("가구 상점의 이미지들")]
+    [SerializeField] private Sprite[] colorImages;
+    [SerializeField] private Sprite[] furnitureImages;
+    [SerializeField] private Sprite[] decorationImages;
+    private  int FurnitureiPanelController = 1;
 
     private void Awake()
     {
@@ -117,6 +123,15 @@ public class ItemShopManager : MonoBehaviour
         upgradeTooSatisfaction = UpgradeTransform.GetChild(1).GetChild(3).GetComponent<TextMeshProUGUI>();
         upgradeTooSellPrice = UpgradeTransform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
         upgradePriceText = UpgradeTransform.GetChild(2).GetComponent<TextMeshProUGUI>();
+
+
+        //가구 패널
+        storeFurnitureImages = new Image[furnitureDownButtons.Length]; 
+        for (int i = 0; i < furnitureDownButtons.Length; i++)
+        {
+            storeFurnitureImages[i] = furnitureDownButtons[i].transform.GetChild(0).GetComponent<Image>();
+        }
+
     }
 
     private void SetupButtonListeners()
@@ -141,6 +156,11 @@ public class ItemShopManager : MonoBehaviour
 
         //조건 패널 버튼
         requirementButton.onClick.AddListener(OffRequirementPanel);
+
+        //가구패널 버튼
+        furnitureLeftButtons[0].onClick.AddListener(ChangeCafeThemePanel);
+        furnitureLeftButtons[1].onClick.AddListener(ChangeFurniturePanel);
+        furnitureLeftButtons[2].onClick.AddListener(ChangeDecorationPanel);
 
         //각 세부 패널들의 버튼들
         for (int i = 0; i < dessertButtons.Length; i++)
@@ -175,8 +195,7 @@ public class ItemShopManager : MonoBehaviour
 
     }
 
-
-        private void OnEnable()
+    private void OnEnable()
     {
         itemShopInput.Enable();
         itemShopInput.ItemShop._1.performed += PressOneButton;
@@ -539,6 +558,71 @@ private void PressOneButton(InputAction.CallbackContext context)
     private void CloseUpgradeItemPanel()
     {
         upgradeItemPanel.SetActive(false);
+    }
+
+    //------------------가구상점 관련
+    private void ChangeCafeThemePanel()
+    {
+        if (FurnitureiPanelController != 1)
+        {
+            for (int i = 0; i < furnitureDownButtons.Length; i++)
+            {
+                if (colorImages[i] == null)
+                {
+                    furnitureDownButtons[i].gameObject.SetActive(false);
+                }
+                else
+                {
+
+                    furnitureDownButtons[i].gameObject.SetActive(true);
+                    storeFurnitureImages[i].sprite = colorImages[i];
+                }
+            }
+        }
+        FurnitureiPanelController = 1;
+        
+    }
+
+    private void ChangeFurniturePanel()
+    {
+        if (FurnitureiPanelController != 2)
+        {
+            for (int i = 0; i < furnitureDownButtons.Length; i++)
+            {
+                if (furnitureImages[i] == null)
+                {
+                    furnitureDownButtons[i].gameObject.SetActive(false);
+                }
+                else
+                {
+
+                    furnitureDownButtons[i].gameObject.SetActive(true);
+                    storeFurnitureImages[i].sprite = furnitureImages[i];
+                }
+            }
+        }
+        FurnitureiPanelController = 2;
+    }
+
+    private void ChangeDecorationPanel()
+    {
+        if (FurnitureiPanelController != 3)
+        {
+            for (int i = 0; i < furnitureDownButtons.Length; i++)
+            {
+                if (decorationImages[i] == null)
+                {
+                    furnitureDownButtons[i].gameObject.SetActive(false);
+                }
+                else
+                {
+
+                    furnitureDownButtons[i].gameObject.SetActive(true);
+                    storeFurnitureImages[i].sprite = decorationImages[i];
+                }
+            }
+        }
+        FurnitureiPanelController = 3;
     }
 
 
