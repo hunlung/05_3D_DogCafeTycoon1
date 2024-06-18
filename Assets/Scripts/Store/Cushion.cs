@@ -15,7 +15,9 @@ public class Cushion : MonoBehaviour
 
 
     private TextMeshPro dirtyText;
+    private TextMeshPro cleaningText;
     private Slider slider;
+    GameObject DogFood;
 
     [SerializeField] private int level;
 
@@ -29,6 +31,8 @@ public class Cushion : MonoBehaviour
         Transform canvasChild = transform.GetChild(0); 
         slider = canvasChild.GetChild(0).GetComponent<Slider>();
         dirtyText = canvasChild.GetChild(1).GetComponent<TextMeshPro>();
+        cleaningText = canvasChild.GetChild(2).GetComponent<TextMeshPro>();
+        DogFood = canvasChild.GetChild(3).gameObject;
     }
 
     //레벨에 따른 청소시간 감소
@@ -46,12 +50,19 @@ public class Cushion : MonoBehaviour
     //손님이 쿠션 사용, 떠남
     public void UsingCushion()
     {
+        if (!isUsing)
+        {
         isUsing = true;
+            DogFood.SetActive(true);
+        }
     }
     public void LeaveCushion()
     {
+        if (!isDirty)
+        {
         isDirty = true;
         dirtyText.gameObject.SetActive(true);
+        }
     }
 
     //쿠션 청소 시작, 끝
@@ -67,6 +78,8 @@ public class Cushion : MonoBehaviour
     IEnumerator ClearingCushion()
     {
         slider.gameObject.SetActive(true);
+        dirtyText.gameObject.SetActive(false);
+        cleaningText.gameObject.SetActive(true);
         float currentTime = 0f;
         isClearing = true;
         while (currentTime < clearTime)
@@ -85,6 +98,8 @@ public class Cushion : MonoBehaviour
         isClearing = false;
         slider.gameObject.SetActive(false);
         dirtyText.gameObject.SetActive(false);
+        cleaningText.gameObject.SetActive(false);
+        DogFood.gameObject.SetActive(false);
     }
 
     private void ClearingCushionBar(float currentTime, int clearTime)

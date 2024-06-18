@@ -23,6 +23,7 @@ public class ItemShopManager : MonoBehaviour
     [SerializeField] Button requirementButton;
     [SerializeField] Button[] upgradeButtons;
     Button lackMoneyButton;
+    [SerializeField] Button[] furnitureButtons;
 
     GameObject ItemShopPanel;
     GameObject dessertPanel;
@@ -61,10 +62,13 @@ public class ItemShopManager : MonoBehaviour
     TextMeshProUGUI upgradeTooSellPrice;
     TextMeshProUGUI upgradeNowSatisfaction;
     TextMeshProUGUI upgradeTooSatisfaction;
-
     //스크롤바
     private const float MinScrollbarSize = 0.15f;
     private const float MaxScrollbarSize = 0.3f;
+
+    //가구상점 TODO:: 이미지를 바꾸는 것과 같은 StoreFurnitrue을 여러개 만들어놓고 켜고끄는것 비교해보기
+    private GameObject storeFurniturePanel;
+    private Image[] storeFurnitureImages;
 
     private void Awake()
     {
@@ -91,6 +95,7 @@ public class ItemShopManager : MonoBehaviour
         requirementPanel = Canvas.transform.GetChild(6).gameObject;
         lackMoneyImage = Canvas.transform.GetChild(7).gameObject;
         lackMoneyButton = lackMoneyImage.GetComponentInChildren<Button>();
+        storeFurniturePanel = Canvas.transform.GetChild(9).gameObject;
         //아이템 구매패널
         Transform itemBuyTransform;
         itemBuyTransform = ItemBuyPanel.transform.GetChild(1).transform;
@@ -122,7 +127,8 @@ public class ItemShopManager : MonoBehaviour
         itemShopButtons[1].onClick.AddListener(GotoDrinkPanel);
         itemShopButtons[2].onClick.AddListener(GotoGoodsPanel);
         itemShopButtons[3].onClick.AddListener(GotoMedicinePanel);
-        itemShopButtons[4].onClick.AddListener(GotoNextDay);
+        itemShopButtons[4].onClick.AddListener(GotoFurniturePanel);
+        itemShopButtons[5].onClick.AddListener(GotoNextDay);
 
         //아이템 구매 패널의 버튼들
         itemBuyButtons[0].onClick.AddListener(BuyItem);
@@ -301,6 +307,11 @@ private void PressOneButton(InputAction.CallbackContext context)
     }
     private void PressFiveButton(InputAction.CallbackContext context)
     {
+        if (ItemShopPanel.activeSelf && !ItemBuyPanel.activeSelf)
+        {
+            ItemShopPanel.SetActive(false);
+            GotoFurniturePanel();
+        }
         if (dessertPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
             ShowItemOnBuyPanel<Item_Dessert>(4);
@@ -321,10 +332,14 @@ private void PressOneButton(InputAction.CallbackContext context)
 
     private void ReturnItemShop(InputAction.CallbackContext context)
     {
-        if (!ItemShopPanel.activeSelf && !ItemBuyPanel.activeSelf)
+        if (!ItemShopPanel.activeSelf && !ItemBuyPanel.activeSelf && !requirementPanel.activeSelf)
         {
             Button returnbutton = GameObject.FindGameObjectWithTag("ReturnButton").GetComponent<Button>();
             GotoItemShop(returnbutton);
+        }
+        else if (requirementPanel.activeSelf)
+        {
+            requirementPanel.SetActive(false);
         }
         else if (upgradeItemPanel.activeSelf)
         {
@@ -334,6 +349,7 @@ private void PressOneButton(InputAction.CallbackContext context)
         {
             ItemBuyPanel.SetActive(false);
         }
+
     }
 
     public void PrepareStore()
@@ -367,6 +383,12 @@ private void PressOneButton(InputAction.CallbackContext context)
     {
         ItemShopPanel.SetActive(false);
         medicinePanel.SetActive(true);
+    }
+    private void GotoFurniturePanel()
+    {
+        ItemShopPanel.SetActive(false);
+        player.transform.position = new Vector3(0, 10, 0);
+        storeFurniturePanel.SetActive(true);
     }
     private void GotoNextDay()
     {
