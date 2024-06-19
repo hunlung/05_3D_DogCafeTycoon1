@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -15,6 +14,7 @@ public class Cushion : MonoBehaviour
 
 
     private TextMeshPro dirtyText;
+    [SerializeField] private AnimationCurve ColorAnimation;
     private TextMeshPro cleaningText;
     private Slider slider;
     GameObject DogFood;
@@ -28,7 +28,7 @@ public class Cushion : MonoBehaviour
         isUsing = false;
         isDirty = false;
 
-        Transform canvasChild = transform.GetChild(0); 
+        Transform canvasChild = transform.GetChild(0);
         slider = canvasChild.GetChild(0).GetComponent<Slider>();
         dirtyText = canvasChild.GetChild(1).GetComponent<TextMeshPro>();
         cleaningText = canvasChild.GetChild(2).GetComponent<TextMeshPro>();
@@ -52,7 +52,7 @@ public class Cushion : MonoBehaviour
     {
         if (!isUsing)
         {
-        isUsing = true;
+            isUsing = true;
             DogFood.SetActive(true);
         }
     }
@@ -60,9 +60,58 @@ public class Cushion : MonoBehaviour
     {
         if (!isDirty)
         {
-        isDirty = true;
-        dirtyText.gameObject.SetActive(true);
+            isDirty = true;
+            StartCoroutine(DirtyTextRainbow());
         }
+    }
+    IEnumerator DirtyTextRainbow()
+    {
+        dirtyText.gameObject.SetActive(true);
+        float curTime = 0;
+        int SetColorNum = 0;
+        Color color = new Color(0f, 0f, 0f, 1f);
+        while (true)
+        {
+            curTime += Time.unscaledDeltaTime;
+            if (SetColorNum == 0)
+            {
+                color.r = ColorAnimation.Evaluate(curTime);
+                dirtyText.color = color;
+                if (color.r >= 0.9f)
+                {
+                    
+                    SetColorNum += 1;
+                    color.g = Random.Range(0, 1f);
+                    curTime = 0;
+                }
+            }
+            else if (SetColorNum == 1)
+            {
+                color.b = ColorAnimation.Evaluate(curTime);
+                dirtyText.color = color;
+                if (color.b >= 0.9f)
+                {
+                    SetColorNum += 1;
+                    color.r = Random.Range(0, 1f);
+                    curTime = 0;
+                }
+            }
+            else
+            {
+                color.g = ColorAnimation.Evaluate(curTime);
+                dirtyText.color = color;
+                if (color.g >= 0.9f)
+                {
+                    SetColorNum = 0;
+                    color.b = Random.Range(0, 1f);
+                    curTime = 0;
+                }
+            }
+            
+
+            yield return new WaitForSeconds(Time.unscaledDeltaTime);
+        }
+
     }
 
     //捻记 没家 矫累, 场
@@ -81,11 +130,26 @@ public class Cushion : MonoBehaviour
         dirtyText.gameObject.SetActive(false);
         cleaningText.gameObject.SetActive(true);
         float currentTime = 0f;
+        float clearingTextChnageTime = 0f;
+        int clearingTextChanger = 0;
         isClearing = true;
         while (currentTime < clearTime)
         {
             currentTime += Time.deltaTime;
             ClearingCushionBar(currentTime, clearTime);
+            clearingTextChnageTime += Time.deltaTime;
+            if (clearingTextChnageTime > 1f)
+            {
+                clearingTextChanger++;
+                clearingTextChnageTime = 0f;
+            }
+            switch (clearingTextChanger)
+            {
+                case 0: cleaningText.text = "没家吝."; break;
+                case 1: cleaningText.text = "没家吝.."; break;
+                case 2: cleaningText.text = "没家吝..."; break;
+            }
+            clearingTextChanger %= 3;
             yield return new WaitForSeconds(Time.deltaTime);
         }
         ClearingEnd();

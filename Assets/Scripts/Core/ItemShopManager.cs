@@ -13,7 +13,10 @@ public class ItemShopManager : MonoBehaviour
     Player player;
 
     PlayerInput itemShopInput;
+    [Header("아이템샵의 버튼들")]
     [SerializeField] Button[] itemShopButtons;
+
+    [Header("아이템샵 하위 버튼들")]
     [SerializeField] Button[] dessertButtons;
     [SerializeField] Button[] drinkButtons;
     [SerializeField] Button[] goodsButtons;
@@ -23,6 +26,7 @@ public class ItemShopManager : MonoBehaviour
     [SerializeField] Button requirementButton;
     [SerializeField] Button[] upgradeButtons;
     Button lackMoneyButton;
+    [Header("가구상점 버튼들")]
     [SerializeField] Button[] furnitureDownButtons;
     [SerializeField] Button[] furnitureLeftButtons;
 
@@ -35,10 +39,6 @@ public class ItemShopManager : MonoBehaviour
     GameObject requirementPanel;
     GameObject lackMoneyImage;
 
-    [SerializeField] Item_Dessert[] item_Dessert;
-    [SerializeField] Item_Drink[] item_Drink;
-    [SerializeField] Item_Goods[] item_Goods;
-    [SerializeField] Item_Medicine[] item_Medicine;
 
     //아이템 구매패널 관련
     ItemBase currentItem;
@@ -55,7 +55,7 @@ public class ItemShopManager : MonoBehaviour
 
     //구매 조건 텍스트
     TextMeshProUGUI requirementText;
-    
+
     //업그레이드 패널 관련
     GameObject upgradeItemPanel;
     TextMeshProUGUI upgradePriceText;
@@ -74,7 +74,21 @@ public class ItemShopManager : MonoBehaviour
     [SerializeField] private Sprite[] colorImages;
     [SerializeField] private Sprite[] furnitureImages;
     [SerializeField] private Sprite[] decorationImages;
-    private  int FurnitureiPanelController = 1;
+    [Header("가구 상점의 상품들")]
+    [SerializeField] private Material[] colorMaterials;
+    [SerializeField] private GameObject[] furniturelObjects;
+    [SerializeField] private GameObject[] decorationObjects;
+
+    private int FurnitureiPanelController = 1;
+    private TextMeshProUGUI[] furnitureLeftBarTexts;
+    private int previousControllerNum = 0;
+
+    public GameObject store;
+    public MeshRenderer storeColor;
+    public MeshRenderer storeDoorColor;
+    public MeshRenderer CounterColor;
+    
+    
 
     private void Awake()
     {
@@ -126,10 +140,15 @@ public class ItemShopManager : MonoBehaviour
 
 
         //가구 패널
-        storeFurnitureImages = new Image[furnitureDownButtons.Length]; 
+        storeFurnitureImages = new Image[furnitureDownButtons.Length];
         for (int i = 0; i < furnitureDownButtons.Length; i++)
         {
             storeFurnitureImages[i] = furnitureDownButtons[i].transform.GetChild(0).GetComponent<Image>();
+        }
+        furnitureLeftBarTexts = new TextMeshProUGUI[3];
+        for (int i = 0; i < furnitureLeftButtons.Length; i++)
+        {
+            furnitureLeftBarTexts[i] = furnitureLeftButtons[i].GetComponentInChildren<TextMeshProUGUI>();
         }
 
     }
@@ -161,6 +180,12 @@ public class ItemShopManager : MonoBehaviour
         furnitureLeftButtons[0].onClick.AddListener(ChangeCafeThemePanel);
         furnitureLeftButtons[1].onClick.AddListener(ChangeFurniturePanel);
         furnitureLeftButtons[2].onClick.AddListener(ChangeDecorationPanel);
+
+        furnitureDownButtons[0].onClick.AddListener(FirstButtonOnFurniturePanel);
+        furnitureDownButtons[1].onClick.AddListener(SecondButtonOnFurniturePanel);
+        furnitureDownButtons[2].onClick.AddListener(ThirdButtonOnFurniturePanel);
+        furnitureDownButtons[3].onClick.AddListener(FourthButtonOnFurniturePanel);
+        furnitureDownButtons[4].onClick.AddListener(FifthButtonOnFurniturePanel);
 
         //각 세부 패널들의 버튼들
         for (int i = 0; i < dessertButtons.Length; i++)
@@ -224,30 +249,34 @@ public class ItemShopManager : MonoBehaviour
     // -----------------아이템샵의 번호에 적힌 숫자를 누르면 해당 버튼을 누르는 함수들
 
 
-private void PressOneButton(InputAction.CallbackContext context)
-{
-    if (ItemShopPanel.activeSelf && !ItemBuyPanel.activeSelf)
+    private void PressOneButton(InputAction.CallbackContext context)
     {
-        ItemShopPanel.SetActive(false);
-        GotoDessertPanel();
+        if (ItemShopPanel.activeSelf && !ItemBuyPanel.activeSelf)
+        {
+            ItemShopPanel.SetActive(false);
+            GotoDessertPanel();
+        }
+        else if (dessertPanel.activeSelf && !ItemBuyPanel.activeSelf)
+        {
+            ShowItemOnBuyPanel<Item_Dessert>(0);
+        }
+        else if (drinkPanel.activeSelf && !ItemBuyPanel.activeSelf)
+        {
+            ShowItemOnBuyPanel<Item_Drink>(0);
+        }
+        else if (goodsPanel.activeSelf && !ItemBuyPanel.activeSelf)
+        {
+            ShowItemOnBuyPanel<Item_Goods>(0);
+        }
+        else if (medicinePanel.activeSelf && !ItemBuyPanel.activeSelf)
+        {
+            ShowItemOnBuyPanel<Item_Medicine>(0);
+        }
+        else if (storeFurniturePanel.activeSelf)
+        {
+            ChangeCafeThemePanel();
+        }
     }
-    else if (dessertPanel.activeSelf && !ItemBuyPanel.activeSelf)
-    {
-        ShowItemOnBuyPanel<Item_Dessert>(0);
-    }
-    else if (drinkPanel.activeSelf && !ItemBuyPanel.activeSelf)
-    {
-        ShowItemOnBuyPanel<Item_Drink>(0);
-    }
-    else if (goodsPanel.activeSelf && !ItemBuyPanel.activeSelf)
-    {
-        ShowItemOnBuyPanel<Item_Goods>(0);
-    }
-    else if (medicinePanel.activeSelf && !ItemBuyPanel.activeSelf)
-    {
-        ShowItemOnBuyPanel<Item_Medicine>(0);
-    }
-}
 
     private void PressTwoButton(InputAction.CallbackContext context)
     {
@@ -266,11 +295,15 @@ private void PressOneButton(InputAction.CallbackContext context)
         }
         else if (goodsPanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
-                ShowItemOnBuyPanel<Item_Goods>(1);
+            ShowItemOnBuyPanel<Item_Goods>(1);
         }
         else if (medicinePanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
             ShowItemOnBuyPanel<Item_Medicine>(1);
+        }
+        else if (storeFurniturePanel.activeSelf)
+        {
+            ChangeFurniturePanel();
         }
     }
 
@@ -297,6 +330,10 @@ private void PressOneButton(InputAction.CallbackContext context)
         else if (medicinePanel.activeSelf && !ItemBuyPanel.activeSelf)
         {
             ShowItemOnBuyPanel<Item_Medicine>(2);
+        }
+        else if (storeFurniturePanel.activeSelf)
+        {
+            ChangeDecorationPanel();
         }
     }
 
@@ -407,7 +444,9 @@ private void PressOneButton(InputAction.CallbackContext context)
     {
         ItemShopPanel.SetActive(false);
         player.transform.position = new Vector3(0, 10, 0);
+        ChangeCafeThemePanel();
         storeFurniturePanel.SetActive(true);
+
     }
     private void GotoNextDay()
     {
@@ -424,7 +463,7 @@ private void PressOneButton(InputAction.CallbackContext context)
 
     private void ShowItemOnBuyPanel<T>(int index) where T : ItemBase
     {
-        ItemBase item = ItemManager.Instance.GetItemByIndex<T >(index);
+        ItemBase item = ItemManager.Instance.GetItemByIndex<T>(index);
         if (item != null)
         {
             UpdateBuyPanel(item);
@@ -441,37 +480,37 @@ private void PressOneButton(InputAction.CallbackContext context)
         if (!item.itemCantBuy && !requirementPanel.activeSelf)
         {
 
-        currentItem = item;
-        currentItemCount = 0;
-        currentItemPrice = 0;
-        ItemBuyPanel.SetActive(true);
-        itemImage.sprite = item.Icon;
-        itemInfoText.text = item.ItemInfo;
-        itemPrice = item.purchasePrice;
-        itemPriceText.text = $"{itemPrice} 원";
+            currentItem = item;
+            currentItemCount = 0;
+            currentItemPrice = 0;
+            ItemBuyPanel.SetActive(true);
+            itemImage.sprite = item.Icon;
+            itemInfoText.text = item.ItemInfo;
+            itemPrice = item.purchasePrice;
+            itemPriceText.text = $"{itemPrice} 원";
 
-        //열 때 최대치 정해놓기
-        maxItemCount = 0;
+            //열 때 최대치 정해놓기
+            maxItemCount = 0;
 
-        while (player.Money >= currentItemPrice)
-        {
-            currentItemCount += 1;
-            currentItemPrice += itemPrice;
-            if (player.Money < currentItemPrice)
+            while (player.Money >= currentItemPrice)
             {
-                currentItemCount -= 1;
-                currentItemPrice -= itemPrice;
-                break;
+                currentItemCount += 1;
+                currentItemPrice += itemPrice;
+                if (player.Money < currentItemPrice)
+                {
+                    currentItemCount -= 1;
+                    currentItemPrice -= itemPrice;
+                    break;
+                }
             }
-        }
-        maxItemCount = currentItemCount;
-        currentItemCount = 1;
-        currentItemPrice = itemPrice;
-        itemScrollbar.value = 0f;
-        itemInputField.text = "";
+            maxItemCount = currentItemCount;
+            currentItemCount = 1;
+            currentItemPrice = itemPrice;
+            itemScrollbar.value = 0f;
+            itemInputField.text = "";
         }
         //조건 불충족 및 조건 패널이 닫혀있을 때
-        else if(item.itemCantBuy && !requirementPanel.activeSelf)
+        else if (item.itemCantBuy && !requirementPanel.activeSelf)
         {
             requirementPanel.SetActive(true);
             requirementText.text = item.requirementinfo;
@@ -560,9 +599,17 @@ private void PressOneButton(InputAction.CallbackContext context)
         upgradeItemPanel.SetActive(false);
     }
 
-    //------------------가구상점 관련
+    //------------------가구상점 관련,왼쪽패널
     private void ChangeCafeThemePanel()
     {
+        if (store == null)
+        {
+            store = GameObject.FindWithTag("MergedStore");
+            storeColor = store.transform.GetChild(0).GetComponent<MeshRenderer>();
+            storeDoorColor = store.transform.GetChild(2).GetComponent<MeshRenderer>();
+            CounterColor = store.transform.GetChild(3).GetComponent<MeshRenderer>();
+            
+        }
         if (FurnitureiPanelController != 1)
         {
             for (int i = 0; i < furnitureDownButtons.Length; i++)
@@ -578,9 +625,12 @@ private void PressOneButton(InputAction.CallbackContext context)
                     storeFurnitureImages[i].sprite = colorImages[i];
                 }
             }
+
+            furnitureLeftBarTexts[0].color = Color.cyan;
+            furnitureLeftBarTexts[previousControllerNum].color = Color.black;
         }
         FurnitureiPanelController = 1;
-        
+        previousControllerNum = 0;
     }
 
     private void ChangeFurniturePanel()
@@ -600,8 +650,13 @@ private void PressOneButton(InputAction.CallbackContext context)
                     storeFurnitureImages[i].sprite = furnitureImages[i];
                 }
             }
+            furnitureLeftBarTexts[1].color = Color.cyan;
+            furnitureLeftBarTexts[previousControllerNum].color = Color.black;
         }
         FurnitureiPanelController = 2;
+        previousControllerNum = 1;
+
+
     }
 
     private void ChangeDecorationPanel()
@@ -621,10 +676,80 @@ private void PressOneButton(InputAction.CallbackContext context)
                     storeFurnitureImages[i].sprite = decorationImages[i];
                 }
             }
+            furnitureLeftBarTexts[2].color = Color.cyan;
+            furnitureLeftBarTexts[previousControllerNum].color = Color.black;
         }
         FurnitureiPanelController = 3;
+        previousControllerNum = 2;
+
     }
 
+    //------------------가구상점관련, 아래쪽 패널
+    private void FirstButtonOnFurniturePanel()
+    {
 
+        switch (FurnitureiPanelController)
+        {
+            case 1:
+                storeColor.material = colorMaterials[0];
+                storeDoorColor.material = colorMaterials[0];
+                CounterColor.material = colorMaterials[5];
+                break;
+            case 2: break;
+            case 3: break;
+        }
+    }
+    private void SecondButtonOnFurniturePanel()
+    {
+        switch (FurnitureiPanelController)
+        {
+            case 1:
+                storeColor.material = colorMaterials[1];
+                storeDoorColor.material = colorMaterials[1];
+                CounterColor.material = colorMaterials[0];
+                break;
+            case 2: break;
+            case 3: break;
+        }
+    }
+    private void ThirdButtonOnFurniturePanel()
+    {
+        switch (FurnitureiPanelController)
+        {
+            case 1:
+                storeColor.material = colorMaterials[2];
+                storeDoorColor.material = colorMaterials[2];
+                CounterColor.material = colorMaterials[6];
+                break;
+            case 2: break;
+            case 3: break;
+        }
+    }
+    private void FourthButtonOnFurniturePanel()
+    {
+        switch (FurnitureiPanelController)
+        {
+            case 1:
+                storeColor.material = colorMaterials[3];
+                storeDoorColor.material = colorMaterials[3];
+                CounterColor.material = colorMaterials[2];
+                break;
+            case 2: break;
+            case 3: break;
+        }
+    }
+    private void FifthButtonOnFurniturePanel()
+    {
+        switch (FurnitureiPanelController)
+        {
+            case 1:
+                storeColor.material = colorMaterials[4];
+                storeDoorColor.material = colorMaterials[4];
+                CounterColor.material = colorMaterials[5];
+                break;
+            case 2: break;
+            case 3: break;
+        }
+    }
 
 }
