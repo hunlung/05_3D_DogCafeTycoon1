@@ -109,7 +109,7 @@ public class Cushion : MonoBehaviour
             }
             
 
-            yield return new WaitForSeconds(Time.unscaledDeltaTime);
+            yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
         }
 
     }

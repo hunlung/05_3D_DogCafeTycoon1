@@ -29,6 +29,7 @@ public class ItemShopManager : MonoBehaviour
     [Header("가구상점 버튼들")]
     [SerializeField] Button[] furnitureDownButtons;
     [SerializeField] Button[] furnitureLeftButtons;
+    [SerializeField] Button[] furnitureBuyButtons;
 
     GameObject ItemShopPanel;
     GameObject dessertPanel;
@@ -38,7 +39,7 @@ public class ItemShopManager : MonoBehaviour
     GameObject ItemBuyPanel;
     GameObject requirementPanel;
     GameObject lackMoneyImage;
-
+    GameObject furnitureBuyPanel;
 
     //아이템 구매패널 관련
     ItemBase currentItem;
@@ -78,8 +79,9 @@ public class ItemShopManager : MonoBehaviour
     [SerializeField] private Material[] colorMaterials;
     [SerializeField] private GameObject[] furniturelObjects;
     [SerializeField] private GameObject[] decorationObjects;
+    private TextMeshProUGUI furnitureBuyText;
 
-    private int FurnitureiPanelController = 1;
+    private int FurnitureiPanelController = 0;
     private TextMeshProUGUI[] furnitureLeftBarTexts;
     private int previousControllerNum = 0;
 
@@ -87,8 +89,8 @@ public class ItemShopManager : MonoBehaviour
     public MeshRenderer storeColor;
     public MeshRenderer storeDoorColor;
     public MeshRenderer CounterColor;
-    
-    
+
+
 
     private void Awake()
     {
@@ -116,6 +118,7 @@ public class ItemShopManager : MonoBehaviour
         lackMoneyImage = Canvas.transform.GetChild(7).gameObject;
         lackMoneyButton = lackMoneyImage.GetComponentInChildren<Button>();
         storeFurniturePanel = Canvas.transform.GetChild(9).gameObject;
+        furnitureBuyPanel = Canvas.transform.GetChild(10).gameObject;
         //아이템 구매패널
         Transform itemBuyTransform;
         itemBuyTransform = ItemBuyPanel.transform.GetChild(1).transform;
@@ -150,6 +153,7 @@ public class ItemShopManager : MonoBehaviour
         {
             furnitureLeftBarTexts[i] = furnitureLeftButtons[i].GetComponentInChildren<TextMeshProUGUI>();
         }
+        furnitureBuyText = furnitureBuyPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
 
     }
 
@@ -186,6 +190,9 @@ public class ItemShopManager : MonoBehaviour
         furnitureDownButtons[2].onClick.AddListener(ThirdButtonOnFurniturePanel);
         furnitureDownButtons[3].onClick.AddListener(FourthButtonOnFurniturePanel);
         furnitureDownButtons[4].onClick.AddListener(FifthButtonOnFurniturePanel);
+
+        furnitureBuyButtons[0].onClick.AddListener(SettingFurnitures);
+        furnitureBuyButtons[1].onClick.AddListener(CloseBuyFurniturePanel);
 
         //각 세부 패널들의 버튼들
         for (int i = 0; i < dessertButtons.Length; i++)
@@ -444,8 +451,8 @@ public class ItemShopManager : MonoBehaviour
     {
         ItemShopPanel.SetActive(false);
         player.transform.position = new Vector3(0, 10, 0);
-        ChangeCafeThemePanel();
         storeFurniturePanel.SetActive(true);
+        ChangeCafeThemePanel();
 
     }
     private void GotoNextDay()
@@ -608,7 +615,7 @@ public class ItemShopManager : MonoBehaviour
             storeColor = store.transform.GetChild(0).GetComponent<MeshRenderer>();
             storeDoorColor = store.transform.GetChild(2).GetComponent<MeshRenderer>();
             CounterColor = store.transform.GetChild(3).GetComponent<MeshRenderer>();
-            
+
         }
         if (FurnitureiPanelController != 1)
         {
@@ -626,10 +633,13 @@ public class ItemShopManager : MonoBehaviour
                 }
             }
 
+            FurnitureiPanelController = 1;
             furnitureLeftBarTexts[0].color = Color.cyan;
-            furnitureLeftBarTexts[previousControllerNum].color = Color.black;
+            if (FurnitureiPanelController - 1 != previousControllerNum)
+            {
+                furnitureLeftBarTexts[previousControllerNum].color = Color.black;
+            }
         }
-        FurnitureiPanelController = 1;
         previousControllerNum = 0;
     }
 
@@ -695,8 +705,12 @@ public class ItemShopManager : MonoBehaviour
                 storeDoorColor.material = colorMaterials[0];
                 CounterColor.material = colorMaterials[5];
                 break;
-            case 2: break;
-            case 3: break;
+            case 2:
+                OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(0));
+                break;
+            case 3:
+                OpenFurniturePanel(ItemManager.Instance.GetDecorationPrice(0));
+                break;
         }
     }
     private void SecondButtonOnFurniturePanel()
@@ -708,8 +722,14 @@ public class ItemShopManager : MonoBehaviour
                 storeDoorColor.material = colorMaterials[1];
                 CounterColor.material = colorMaterials[0];
                 break;
-            case 2: break;
-            case 3: break;
+
+            case 2:
+                OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(1));
+                break;
+
+            case 3:
+                
+                break;
         }
     }
     private void ThirdButtonOnFurniturePanel()
@@ -721,8 +741,14 @@ public class ItemShopManager : MonoBehaviour
                 storeDoorColor.material = colorMaterials[2];
                 CounterColor.material = colorMaterials[6];
                 break;
-            case 2: break;
-            case 3: break;
+
+            case 2:
+                OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(2));
+                break;
+
+            case 3:
+
+                break;
         }
     }
     private void FourthButtonOnFurniturePanel()
@@ -734,8 +760,13 @@ public class ItemShopManager : MonoBehaviour
                 storeDoorColor.material = colorMaterials[3];
                 CounterColor.material = colorMaterials[2];
                 break;
-            case 2: break;
-            case 3: break;
+            case 2:
+                OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(3));
+                break;
+
+            case 3:
+
+                break;
         }
     }
     private void FifthButtonOnFurniturePanel()
@@ -747,9 +778,39 @@ public class ItemShopManager : MonoBehaviour
                 storeDoorColor.material = colorMaterials[4];
                 CounterColor.material = colorMaterials[5];
                 break;
-            case 2: break;
+
+            case 2:
+                OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(4));
+                break;
+
             case 3: break;
+
         }
     }
+
+    //------------------------가구구매창 관련(열기,닫기,구매)
+    private void OpenFurniturePanel(int price)
+    {
+        furnitureBuyPanel.SetActive(true);
+        furnitureBuyText.text = $"{price}원";
+        currentItemPrice = price;
+    }
+
+
+    private void CloseBuyFurniturePanel()
+    {
+        furnitureBuyPanel?.SetActive(false);
+    }
+    private void SettingFurnitures()
+    {
+        //TODO:: 구매누르면 2일때 바닥 그리드, 3일때 벽 그리드 켜지고 설치가능이면 초록색, 아니면 빨간색,겹치게 설치 불가능,
+        //커피포트는 1개만, 카운터 뒤쪽에만 설치가능.
+    }
+
+    private void BuyFurnitrues()
+    {
+        //세팅시 여기서 돈 지출
+    }
+
 
 }

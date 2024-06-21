@@ -1,33 +1,42 @@
 using UnityEngine;
 
-public class ItemManager : MonoBehaviour
+public class ItemManager : Singleton<ItemManager>
 {
-    public static ItemManager Instance { get; private set; }
+
+
 
     [SerializeField] private Item_Dessert[] originalDessertItems;
     [SerializeField] private Item_Drink[] originalDrinkItems;
     [SerializeField] private Item_Goods[] originalGoodsItems;
-   [SerializeField] private Item_Medicine[] originalMedicineItems;
+    [SerializeField] private Item_Medicine[] originalMedicineItems;
 
     public Item_Dessert[] runtimeDessertItems;
     public Item_Drink[] runtimeDrinkItems;
     public Item_Goods[] runtimeGoodsItems;
     public Item_Medicine[] runtimeMedicineItems;
 
+    [Header("기능용가구 가격")]
+    private int[] furniturePrices;
+    [SerializeField] private int CuffePort = 3000;
+    [SerializeField] private int cushionPrice = 2500;
+    [SerializeField] private int highCushionPrice = 3500;
+    [SerializeField] private int perfectCushionPrice = 4500;
+    [Header("장식용가구 가격")]
+    private int[] decorationPrices;
+    [SerializeField] private int clockPrice = 500;
+
+
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+ 
+        furniturePrices = new int[4];
+        furniturePrices[0] = CuffePort;
+        furniturePrices[1] = cushionPrice;
+        furniturePrices[2] = highCushionPrice;
+        furniturePrices[3] = perfectCushionPrice;
 
-        InitializeItems();
+        decorationPrices = new int[1];
+        decorationPrices[0] = clockPrice;
     }
 
     private void InitializeItems()
@@ -79,4 +88,15 @@ public class ItemManager : MonoBehaviour
 
         return null;
     }
+
+    public int GetFurniturePrice(int i)
+    {
+
+        return furniturePrices[i];
+    }
+    public int GetDecorationPrice(int i)
+    {
+        return decorationPrices[i];
+    }
+
 }
