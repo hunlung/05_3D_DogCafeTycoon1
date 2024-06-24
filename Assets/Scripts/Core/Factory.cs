@@ -3,15 +3,24 @@ using UnityEngine;
 public class Factory : Singleton<Factory>
 {
 
-    AssaultRiflePool assaultRiflePool;
+    CorgiPool corgiPool;
 
 
     protected override void OnInitialize()
     {
         base.OnInitialize();
 
-        assaultRiflePool = GetComponentInChildren<AssaultRiflePool>();
-        assaultRiflePool?.Initialize();
+        corgiPool = GetComponentInChildren<CorgiPool>();
+        corgiPool?.Initialize();
+
+    }
+
+    public DogBase GetCorgi()
+    {
+        DogBase dog = corgiPool?.GetObject();
+
+
+        return dog;
 
     }
 

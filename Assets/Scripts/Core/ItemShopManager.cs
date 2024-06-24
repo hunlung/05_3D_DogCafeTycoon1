@@ -713,6 +713,7 @@ public class ItemShopManager : MonoBehaviour
                 break;
         }
     }
+    
     private void SecondButtonOnFurniturePanel()
     {
         switch (FurnitureiPanelController)

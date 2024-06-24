@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PasserByManager : MonoBehaviour
 {
-    GameObject dog;
+    
+    public void MakePassbyDog()
+    {
+        Factory.Instance.GetCorgi();
+    }
 
 }

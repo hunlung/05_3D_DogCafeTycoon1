@@ -30,6 +30,25 @@ public class Player : MonoBehaviour
     }
 
 
+    private int level;
+    private float totalSatisfaction;
+    public float TotalSatisfaction
+    {
+        get { return totalSatisfaction; }
+        set
+        {
+            if(totalSatisfaction != value)
+            {
+                totalSatisfaction = value;
+            }
+        }
+    }
+
+
+
+
+
+
 }
 
 
