@@ -184,7 +184,7 @@ public class TimeManager : MonoBehaviour
         SetNormalTimeSpeed(); // 1배속으로 변경하기
         while (CurrentHour <= endHour)
         {
-            CurrentMinute += 1; // 1분씩 증가
+            CurrentMinute += 2; // 초당 2분씩 증가
             yield return new WaitForSeconds(1f); // 1초 대기
         }
     }
