@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class DogBase : RecycleObject
@@ -19,6 +17,7 @@ public class DogBase : RecycleObject
 
     [SerializeField] private Item_Dessert likeFood;
     [SerializeField] private Item_Drink likeDrink;
+    [SerializeField] private ItemBase[] ChooseItems;
     [SerializeField] private float Speed = 1f;
     [Header("확률 보기")]
     [SerializeField] float setRandomFloat;
@@ -28,8 +27,6 @@ public class DogBase : RecycleObject
     private const float GroundMinZ = -8.5f;
     private const float GroundMaxZ = -7.3f;
 
-    private Image thoguhtImage;
-    private Sprite questionMark;
 
     //확률들
     [Header("무언가를 할 확률들")]
@@ -54,6 +51,7 @@ public class DogBase : RecycleObject
     public bool goStore = false;
     public bool inStore = false;
 
+    Wating wating;
     Animator animator;
     Player player;
     GameObject store;
@@ -80,7 +78,8 @@ public class DogBase : RecycleObject
             store = GameObject.FindWithTag("MergedStore");
             storeMoveTransform = store.transform.GetChild(4);
         }
-        thoguhtImage = transform.GetChild(2).GetChild(0).GetChild(0).GetComponent<Image>();
+        wating = FindAnyObjectByType<Wating>();
+        ChooseItems = new ItemBase[5];
     }
 
     private void SetDestination()
@@ -102,8 +101,7 @@ public class DogBase : RecycleObject
         setRandomFloat = Random.value;
         //인기도에 따라 확률 조절하기 TODO::최대 40%
         //totalProbability =  player.TotalSatisfaction;
-        state = DogState.Walk;
-        ChangeState();
+        ChangeState(DogState.Walk);
         if (setRandomFloat >= goStoreProbBasic + goStoreProb)
         {
             goStore = false;
@@ -145,6 +143,90 @@ public class DogBase : RecycleObject
             gameObject.SetActive(false);
         }
     }
+    //줄서기
+    IEnumerator WaitingOrder()
+    {
+        int watingNumber = 5;
+        while(watingNumber >= 1)
+        {
+   
+            transform.position = Vector3.MoveTowards(transform.position, wating.CheckWating().position, Time.deltaTime * Speed);
+            watingNumber = wating.CheckWatingNumber();
+            Debug.Log($"현재 대기번호: {watingNumber}");
+        yield return new WaitForSeconds(1f);
+        }
+        Debug.Log("대기 끝, 주문으로 넘어감");
+        StartCoroutine(OrderAndWating());
+
+    }
+
+    //주문하고 기다리기
+    IEnumerator OrderAndWating()
+    {
+        int randomInt;
+        bool isOrder = false;
+        int orderCount = 0;
+        float thoughtTime = Random.Range(0.2f, 5f);
+        Debug.Log("주문 생각중");
+        yield return new WaitForSeconds(thoughtTime);
+        Debug.Log("주문중");
+        while (isOrder == false)
+        {
+            setRandomFloat = Random.value;
+            if (setRandomFloat <= orderLike)
+            {
+                //좋아하는 세트 주문하고
+                ChooseItems[0] = likeFood;
+                ChooseItems[1] = likeDrink;
+                orderCount++;
+                isOrder = true;
+                Debug.Log($"좋아하는 음식 주문 주문내용: {ChooseItems[0]},{ChooseItems[1]}");
+                //끝
+                break;
+            }
+            else
+            {
+            setRandomFloat = Random.value;
+                //음식 시키기
+                if(setRandomFloat <= 0.3f)
+                {
+                    randomInt = Random.Range(0,4);
+                    ChooseItems[0] = ItemManager.Instance.GetItemByIndex<Item_Dessert>(randomInt);
+                    orderCount++;
+                    isOrder = true;
+                    Debug.Log($"음식 주문: {ChooseItems[0]}");
+
+                }
+                //음료 시키기
+                setRandomFloat = Random.value;
+                if(setRandomFloat <= 0.5f) 
+                {
+                    randomInt = Random.Range(0, 4);
+                    ChooseItems[1] = ItemManager.Instance.GetItemByIndex<Item_Drink>(randomInt);
+                    orderCount++;
+                    isOrder = true;
+                    Debug.Log($"마실것 주문: {ChooseItems[1]}");
+
+                }
+                //굿즈
+                setRandomFloat = Random.value;
+                if(setRandomFloat <= 0.15f)
+                {
+                    ChooseItems[2] = ItemManager.Instance.GetItemByIndex<Item_Goods>(0);
+                    orderCount++;
+                    isOrder = true;
+                    Debug.Log($"굿즈 주문: {ChooseItems[2]}");
+                }
+            }//TODO:: 약은 처음부터 약사러온녀석만 약만구매함
+
+            onOrder?.Invoke(ChooseItems);
+                yield return null;
+        }
+
+    }
+    public System.Action<ItemBase[]> onOrder;
+    //=============================목적지
+    //손님
     private void GoStore()
     {
         //TODO:: 방향 고치기
@@ -154,60 +236,12 @@ public class DogBase : RecycleObject
         {
             inStore = true;
             StopAllCoroutines();
-            StartCoroutine(OrderAndWating());
+            StartCoroutine(WaitingOrder());
             Debug.Log("가게 도착");
         }
-
     }
 
-    //주문하고 기다리기
-    IEnumerator OrderAndWating()
-    {
-        bool isOrder = false;
-        int orderCount = 0;
-        float thoughtTime = Random.Range(0.2f, 5f);
-
-        yield return new WaitForSeconds(thoughtTime);
-
-        while (isOrder == false)
-        {
-            setRandomFloat = Random.value;
-            if (setRandomFloat <= orderLike)
-            {
-                //주문하고
-                orderCount++;
-                isOrder = true;
-            }
-            else
-            {
-            setRandomFloat = Random.value;
-                //음식 시키기
-                if(setRandomFloat <= 0.3f)
-                {
-                    orderCount++;
-                    isOrder = true;
-                }
-                //음료 시키기
-                setRandomFloat = Random.value;
-                if(setRandomFloat <= 0.5f) 
-                {
-                    orderCount++;
-                    isOrder = true;
-                }
-                //굿즈
-                setRandomFloat = Random.value;
-                if(setRandomFloat <= 0.15f)
-                {
-                    orderCount++;
-                    isOrder = true;
-                }
-            }//TODO:: 약은 처음부터 약사러온녀석만 약만구매함
-
-                yield return null;
-        }
-
-    }
-
+    //행인
     private void PassBy()
     {
         switch (isRight)
@@ -223,20 +257,24 @@ public class DogBase : RecycleObject
         }
     }
 
-    private void ChangeState()
+    private void ChangeState(DogState value)
     {
-        switch (state)
+        switch (value)
         {
             case DogState.Wait:
+                state = DogState.Wait;
                 animator.SetInteger("AnimationID", 0);
                 break;
             case DogState.Walk:
+                state = DogState.Walk;
                 animator.SetInteger("AnimationID", 1);
                 break;
             case DogState.Sit:
+                state = DogState.Sit;
                 animator.SetInteger("AnimationID", 2);
                 break;
             case DogState.Angry:
+                state = DogState.Angry;
                 animator.SetInteger("AnimationID", 3);
                 break;
         }

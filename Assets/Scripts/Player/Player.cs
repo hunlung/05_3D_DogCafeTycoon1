@@ -22,22 +22,21 @@ public class Player : MonoBehaviour
         }
     }
 
-    public Action<int,int> OnMoneyChange;
-
+    public Action<int, int> OnMoneyChange;
+    DogBase customer;
     private void Start()
     {
         Money += 20000;
+        customer.onOrder += SellItem;
     }
 
-
-    private int level;
     private float totalSatisfaction;
     public float TotalSatisfaction
     {
         get { return totalSatisfaction; }
         set
         {
-            if(totalSatisfaction != value)
+            if (totalSatisfaction != value)
             {
                 totalSatisfaction = value;
             }
@@ -45,6 +44,32 @@ public class Player : MonoBehaviour
     }
 
 
+    private void SellItem(ItemBase[] item)
+    {
+        for (int i = 0; i < item.Length; i++)
+        {
+            if (item[i] != null && item[i].remaining >= 1)
+            {
+                Money += item[i].sellPrice;
+                item[i].remaining--;
+                TotalSatisfaction += item[i].satisfaction;
+                onSell?.Invoke();
+                Debug.Log($"아이템 판매 완료, 남은 {item[i].name}의 개수: {item[i].remaining}개 ");
+                
+            }
+            else if (item[i] == null)
+            {
+                Debug.Log($"item{i}가 없습니다.");
+            }
+            else
+            {
+             Debug.Log($"{item[i].name}이 다 떨어졌습니다.");   
+            }
+
+
+        }
+    }
+    public Action onSell;
 
 
 
