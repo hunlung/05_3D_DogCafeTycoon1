@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: 02_Jelly
   m_EditorClassIdentifier: 
   ItemType: 2
+  itemCode: 1
   Icon: {fileID: 21300000, guid: 39bcf718992724d419874e035009850d, type: 3}
   ItemName: "\uC824\uB9AC"
-  remaining: 0
+  remaining: 1
   purchasePrice: 700
   sellPrice: 1200
   satisfaction: 2
   upgradePrice: 4200
   upgradeEfficiency: 0.5
-  upgradeRequirement: 0
+  itemCantBuy: 0
   requirementinfo: 
   ItemInfo: "\uC2FC\uAC12\uC5D0 \uAC1C\uAECC\uB290\uB08C\uC744 \uB290\uB084 \uC218
     \uC788\uB294 \uC824\uB9AC"

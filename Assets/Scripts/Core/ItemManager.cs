@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class ItemManager : Singleton<ItemManager>
+public class ItemManager : MonoBehaviour
 {
+    public static ItemManager Instance { get; private set; }
+
 
 
 
@@ -28,7 +30,18 @@ public class ItemManager : Singleton<ItemManager>
 
     private void Awake()
     {
- 
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+        InitializeItems();
+
         furniturePrices = new int[4];
         furniturePrices[0] = CuffePort;
         furniturePrices[1] = cushionPrice;
@@ -37,7 +50,9 @@ public class ItemManager : Singleton<ItemManager>
 
         decorationPrices = new int[1];
         decorationPrices[0] = clockPrice;
+
     }
+
 
     private void InitializeItems()
     {

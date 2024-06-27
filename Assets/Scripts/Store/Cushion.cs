@@ -172,4 +172,9 @@ public class Cushion : MonoBehaviour
         slider.value = currentValue;
     }
 
+    public bool CheckCushion()
+    {
+        return isUsing;
+    }
+
 }

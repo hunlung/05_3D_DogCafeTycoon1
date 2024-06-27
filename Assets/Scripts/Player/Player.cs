@@ -23,11 +23,9 @@ public class Player : MonoBehaviour
     }
 
     public Action<int, int> OnMoneyChange;
-    DogBase customer;
     private void Start()
     {
         Money += 20000;
-        customer.onOrder += SellItem;
     }
 
     private float totalSatisfaction;
@@ -44,7 +42,8 @@ public class Player : MonoBehaviour
     }
 
 
-    private void SellItem(ItemBase[] item)
+    //주문한게 둘다 없으면 바로 가게 떠나게 하기TODO::
+    public void SellItem(ItemBase[] item)
     {
         for (int i = 0; i < item.Length; i++)
         {

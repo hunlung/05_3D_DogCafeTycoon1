@@ -5,7 +5,7 @@ using UnityEngine;
 public class Wating : MonoBehaviour
 {
 
-    private Transform[] watingTransforms;
+  [SerializeField] private Transform[] watingTransforms;
     private bool[] isUsing;
     private int watingNumber;
 
@@ -14,18 +14,23 @@ public class Wating : MonoBehaviour
     private void Awake()
     {
         watingTransforms = GetComponentsInChildren<Transform>();
-        isUsing = new bool[watingTransforms.Length];
+        isUsing = new bool[watingTransforms.Length-1];
+        for(int i = 0; i < watingTransforms.Length-1; i++)
+        {
+            isUsing[i] = false;
+        }
     }
 
-    public Transform CheckWating()
+    public Transform CheckWating(int number)
     {
-        for (int i = 0; i < watingTransforms.Length; i++)
+        isUsing[number] = false;
+        for (int i = 0; i < watingTransforms.Length-1; i++)
         {
             if (isUsing[i] == false)
             {
                 isUsing[i] = true;
                 watingNumber = i;
-                return watingTransforms[i].transform;
+                return watingTransforms[i+1].transform;
             }
         }
         Debug.LogWarning("줄이 없습니다.");
@@ -35,6 +40,10 @@ public class Wating : MonoBehaviour
     public int CheckWatingNumber()
     {
         return watingNumber;
+    }
+    public void LeaveWating(int number)
+    {
+        isUsing[number] = false;
     }
 
 }

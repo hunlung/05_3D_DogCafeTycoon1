@@ -12,6 +12,14 @@ TagManager:
   - MergedStore
   - StoreFurniture
   - DessertPanel
+  - ItemBuySellPanel
+  - CantUseItem
+  - GoodsPanel
+  - ItemShop
+  - RequirementItemPanel
+  - DrinkPanel
+  - MedicinePanel
+  - Cushion
   layers:
   - Default
   - TransparentFX

@@ -17,8 +17,9 @@ public class ItemBase : ScriptableObject
 {
     //아이템 분류
     public ItemType ItemType;
-    
+
     //아이템 정보
+    public int itemCode;
     public Sprite Icon;
     public string ItemName;
     public int remaining;

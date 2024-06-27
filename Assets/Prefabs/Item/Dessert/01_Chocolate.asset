@@ -15,13 +15,13 @@ MonoBehaviour:
   ItemType: 2
   Icon: {fileID: 21300000, guid: 8d2e94a3243f8d848aa7162587d58021, type: 3}
   ItemName: "\uCD08\uCF54\uBC14"
-  remaining: 0
+  remaining: 1
   purchasePrice: 800
   sellPrice: 1100
   satisfaction: 4
   upgradePrice: 4200
   upgradeEfficiency: 0.3
-  upgradeRequirement: 0
+  itemCantBuy: 0
   requirementinfo: 
   ItemInfo: "\uAC1C\uB4E4\uC774 \uC88B\uC544(\uC544\uB2D8)\uD558\uB294 \uCD08\uCF54\uBC14(\uC544\uB2D8),\uBA39\uC5B4\uB3C4
     \uAD1C\uCC2E\uB2E4."

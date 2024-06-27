@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: 05_Meat
   m_EditorClassIdentifier: 
   ItemType: 2
+  itemCode: 4
   Icon: {fileID: 21300000, guid: 08262a1fd08a95943bede1a4c44fe0b8, type: 3}
   ItemName: "\uACE0\uAE30"
-  remaining: 0
+  remaining: 1
   purchasePrice: 2500
   sellPrice: 5000
   satisfaction: 8

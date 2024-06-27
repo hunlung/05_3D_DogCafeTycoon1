@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: 03_Espresso
   m_EditorClassIdentifier: 
   ItemType: 1
+  itemCode: 2
   Icon: {fileID: 21300000, guid: b6c302e4b4e3bfd4b83f1e745b385b0c, type: 3}
   ItemName: "\uC5D0\uC2A4\uD504\uB808\uC18C"
-  remaining: 3
+  remaining: 1
   purchasePrice: 500
   sellPrice: 2000
   satisfaction: 1
