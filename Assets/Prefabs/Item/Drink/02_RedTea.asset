@@ -16,7 +16,7 @@ MonoBehaviour:
   itemCode: 1
   Icon: {fileID: 21300000, guid: 96042ac16379f1942a1ffc9635236eda, type: 3}
   ItemName: "\uD64D\uCC28"
-  remaining: 1
+  remaining: 5
   purchasePrice: 500
   sellPrice: 1300
   satisfaction: 2

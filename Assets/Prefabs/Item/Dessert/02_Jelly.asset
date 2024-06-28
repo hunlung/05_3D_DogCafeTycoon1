@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: 02_Jelly
   m_EditorClassIdentifier: 
   ItemType: 2
-  itemCode: 1
+  itemCode: 0
   Icon: {fileID: 21300000, guid: 39bcf718992724d419874e035009850d, type: 3}
   ItemName: "\uC824\uB9AC"
-  remaining: 1
+  remaining: 5
   purchasePrice: 700
   sellPrice: 1200
   satisfaction: 2

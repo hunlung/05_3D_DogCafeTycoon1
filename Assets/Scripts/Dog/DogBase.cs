@@ -46,6 +46,7 @@ public class DogBase : RecycleObject
     [Range(0f, 1f)]
     [SerializeField] private float orderLike = 0.4f;
 
+    int orderCount = 0;
     int watingNumber = 5;
 
     //private로 바꾸고 나중에 test변경 TODO::
@@ -54,14 +55,14 @@ public class DogBase : RecycleObject
     public bool inStore = false;
     public bool isWaiting = false;
     public bool goCushion = false;
-    public bool isSit = false;
+    public bool isLeave = false;
 
     ItemShopManager itemshopManager;
     GameObject dogQuestionMark;
     Wating wating;
     Animator animator;
     Player player;
-    Cushion[] cushions;
+    public Cushion[] cushions;
     Cushion usingCushion;
     GameObject store;
     Transform storeMoveTransform;
@@ -76,8 +77,8 @@ public class DogBase : RecycleObject
     {
         base.OnEnable();
         Initialize();
-        
-        
+
+
         SetDestination();
     }
 
@@ -89,7 +90,7 @@ public class DogBase : RecycleObject
         inStore = false;
         isWaiting = false;
         goCushion = false;
-        isSit = false;
+        isLeave = false;
 
         watingNumber = 5;
         if (store == null)
@@ -103,9 +104,9 @@ public class DogBase : RecycleObject
     {
         player = GameManager.Instance.Player;
         player.onSell += FindCushion;
+        cushions = FindObjectsOfType<Cushion>();
         likeFood = ItemManager.Instance.GetItemByIndex<Item_Dessert>(likeFood.itemCode);
         likeDrink = ItemManager.Instance.GetItemByIndex<Item_Drink>(likeDrink.itemCode);
-        cushions = FindObjectsOfType<Cushion>();
     }
 
 
@@ -170,30 +171,31 @@ public class DogBase : RecycleObject
         }
         else if (!isWaiting)
         {
-            transform.position = Vector3.MoveTowards(transform.position, wating.CheckWating(watingNumber).position, Time.deltaTime * Speed);
+            transform.position = Vector3.MoveTowards(transform.position, dogMoveTransform.position, Time.deltaTime * Speed);
         }
         else if (!goCushion)
         {
             transform.position = Vector3.MoveTowards(transform.position, usingCushion.transform.position, Time.deltaTime * Speed);
-            if(transform.position == usingCushion.transform.position)
+            if (transform.position == usingCushion.transform.position)
             {
                 goCushion = true;
                 StartCoroutine(SitCushion());
             }
         }
-        else if (!isSit)
+        else if (isLeave)
         {
-
+            StartCoroutine(LeaveStore());
         }
         else
         {
-            StopAllCoroutines();
+            StartCoroutine(LeaveStore());
 
         }
 
         //도로 왼쪽, 오른쪽 끝에 도달 시
         if (transform.position.x <= GroundLeftX || transform.position.x >= GroundRightX)
         {
+            StopAllCoroutines();
             gameObject.SetActive(false);
         }
     }
@@ -203,23 +205,61 @@ public class DogBase : RecycleObject
         ChangeState(DogState.Sit);
         usingCushion.UsingCushion();
         yield return new WaitForSeconds(Random.Range(7, 20));
-        isSit = true;
+        isLeave = true;
         usingCushion.LeaveCushion();
+    }
+
+    IEnumerator LeaveStore()
+    {
+        Debug.Log($"{gameObject.name}이 가게를 떠납니다.");
+        isRight = true;
+        goStore = true;
+        inStore = true;
+        isWaiting = true;
+        goCushion = true;
+        isLeave = true;
+        bool outStore = false;
+
+        dogMoveTransform = storeMoveTransform.GetChild(0);
+        transform.SetPositionAndRotation(Vector3.MoveTowards(transform.position, dogMoveTransform.position, Time.deltaTime * Speed), Quaternion.LookRotation(new Vector3(-dogMoveTransform.position.x, 0f, 0f)));
+        if (transform.position == dogMoveTransform.position && outStore == false)
+        {
+            setRandomFloat = Random.value;
+            if (setRandomFloat >= 0.5)
+            {
+                isRight = true;
+                outStore = true;
+            }
+            else
+            {
+                isRight = false;
+                outStore = true;
+            }
+            Debug.Log("가게 도착");
+            while(outStore == true)
+            {
+                PassBy();
+                yield return new WaitForSeconds(Time.deltaTime);
+            }
+        }
+        
+
+        yield return null;
     }
 
     //줄서기
     IEnumerator WaitingOrder()
     {
 
+            dogMoveTransform = wating.CheckWating(watingNumber);
+            watingNumber = wating.CheckWatingNumber();
+            Debug.Log($"{gameObject.name}의 시작 대기번호: {watingNumber}");
         while (watingNumber >= 1)
         {
 
-
-            watingNumber = wating.CheckWatingNumber();
-            Debug.Log($"현재 대기번호: {watingNumber}");
             yield return new WaitForSeconds(1f);
         }
-        Debug.Log("대기 끝, 주문으로 넘어감");
+        Debug.Log($"{gameObject.name} 대기 끝, 주문으로 넘어감");
         StartCoroutine(OrderAndWating());
 
     }
@@ -231,10 +271,9 @@ public class DogBase : RecycleObject
         int randomInt;
         bool isOrder = false;
         float thoughtTime = Random.Range(0.2f, 2f);
-
-        Debug.Log("주문 생각중");
+        
+        orderCount = 0;
         yield return new WaitForSeconds(thoughtTime);
-        Debug.Log("주문중");
         while (isOrder == false)
         {
             setRandomFloat = Random.value;
@@ -244,7 +283,7 @@ public class DogBase : RecycleObject
                 ChooseItems[0] = likeFood;
                 ChooseItems[1] = likeDrink;
                 isOrder = true;
-                Debug.Log($"좋아하는 음식 주문 주문내용: {ChooseItems[0]},{ChooseItems[1]}");
+                orderCount = 2;
                 //끝
                 break;
             }
@@ -258,8 +297,8 @@ public class DogBase : RecycleObject
                     ChooseItems[0] = ItemManager.Instance.GetItemByIndex<Item_Dessert>(randomInt);
                     if (!ChooseItems[0].itemCantBuy)
                     {
-                    isOrder = true;
-                    Debug.Log($"음식 주문: {ChooseItems[0]}");
+                        isOrder = true;
+                        orderCount++;
                     }
 
                 }
@@ -271,8 +310,8 @@ public class DogBase : RecycleObject
                     ChooseItems[1] = ItemManager.Instance.GetItemByIndex<Item_Drink>(randomInt);
                     if (!ChooseItems[1].itemCantBuy)
                     {
-                    isOrder = true;
-                    Debug.Log($"마실것 주문: {ChooseItems[1]}");
+                        isOrder = true;
+                        orderCount++;
                     }
 
                 }
@@ -282,30 +321,53 @@ public class DogBase : RecycleObject
                 {
                     ChooseItems[2] = ItemManager.Instance.GetItemByIndex<Item_Goods>(0);
                     isOrder = true;
-                    Debug.Log($"굿즈 주문: {ChooseItems[2]}");
+                    orderCount++;
                 }
             }//TODO:: 약은 처음부터 약사러온녀석만 약만구매함
 
         }
-        player.SellItem(ChooseItems);
+        //주문나오는 시간 대기
+        yield return new WaitForSeconds(5.0f);
+        player.SellItem(ChooseItems, orderCount);
         yield return null;
 
     }
 
     //============== 의자찾아서 앉거나 가게 떠나기 TODO::
-    private void FindCushion()
+    private void FindCushion(int number)
     {
-        if(!isWaiting && !goCushion)
+        bool isCushion = false;
+        if (!isWaiting && !goCushion && orderCount == number)
         {
-        isWaiting = true;
-        wating.LeaveWating(watingNumber);
-        for(int i = 0; i< cushions.Length; i++)
-        {
-            if (!cushions[i].CheckCushion())
+            Debug.Log($"{gameObject.name}가 쿠션을 찾습니다.");
+            isWaiting = true;
+            wating.LeaveWating(0);
+            for (int i = 0; i < cushions.Length; i++)
             {
-                usingCushion = cushions[i];
+                if (!cushions[i].CheckCushion())
+                {
+                    usingCushion = cushions[i];
+                    isCushion = true;
+                    player.Money += 300;
+                    break;
+                }
+            }
+            //쓸 쿠션이 없으면 떠난다.
+            if (isCushion == false)
+            {
+                goCushion = true;
+                isLeave = true;
+                Debug.Log("쿠션이없어 가게를 떠납니다.");
             }
         }
+        else if(!isCushion && !goCushion && inStore)
+        {
+            wating.LeaveWating(watingNumber);
+            watingNumber -= 1;
+            dogMoveTransform = wating.CheckWating(watingNumber);
+            Debug.Log($"현재 {gameObject.name}의 대기번호: {watingNumber}");
+            
+
         }
     }
 

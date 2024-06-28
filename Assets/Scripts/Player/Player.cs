@@ -43,8 +43,9 @@ public class Player : MonoBehaviour
 
 
     //주문한게 둘다 없으면 바로 가게 떠나게 하기TODO::
-    public void SellItem(ItemBase[] item)
+    public void SellItem(ItemBase[] item, int orderCount)
     {
+        int soldOutCount = 0;
         for (int i = 0; i < item.Length; i++)
         {
             if (item[i] != null && item[i].remaining >= 1)
@@ -52,7 +53,6 @@ public class Player : MonoBehaviour
                 Money += item[i].sellPrice;
                 item[i].remaining--;
                 TotalSatisfaction += item[i].satisfaction;
-                onSell?.Invoke();
                 Debug.Log($"아이템 판매 완료, 남은 {item[i].name}의 개수: {item[i].remaining}개 ");
                 
             }
@@ -62,14 +62,24 @@ public class Player : MonoBehaviour
             }
             else
             {
-             Debug.Log($"{item[i].name}이 다 떨어졌습니다.");   
+             Debug.Log($"{item[i].name}이 다 떨어졌습니다.");
+                soldOutCount++;
             }
-
-
+            
+        }
+        //모든 품목이 품절
+        if(soldOutCount == orderCount)
+        {
+            onSoldOut?.Invoke(orderCount);
+        }
+        //하나라도 팔았다면
+        else
+        {
+            onSell?.Invoke(orderCount);
         }
     }
-    public Action onSell;
-
+    public Action<int> onSell;
+    public Action<int> onSoldOut;
 
 
 

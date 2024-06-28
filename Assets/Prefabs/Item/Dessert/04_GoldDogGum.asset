@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: 04_GoldDogGum
   m_EditorClassIdentifier: 
   ItemType: 2
-  itemCode: 3
+  itemCode: 0
   Icon: {fileID: 21300000, guid: 424a577adf570f94895064fedb62ce07, type: 3}
   ItemName: "\uACE0\uAE09\uAC1C\uAECC"
-  remaining: 1
+  remaining: 5
   purchasePrice: 2500
   sellPrice: 7000
   satisfaction: 4

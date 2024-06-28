@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Medicine
   m_EditorClassIdentifier: 
   ItemType: 0
+  itemCode: 0
   Icon: {fileID: 21300000, guid: 2dff1dbf7c6e41542837eb968faa95e0, type: 3}
   ItemName: "\uC57D"
-  remaining: 1
+  remaining: 5
   purchasePrice: 5000
   sellPrice: 7000
   satisfaction: 0

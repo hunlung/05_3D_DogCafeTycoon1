@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: 01_GreenTea
   m_EditorClassIdentifier: 
   ItemType: 1
+  itemCode: 0
   Icon: {fileID: 21300000, guid: 2e3084d9a6035264890b457f0f7e1a71, type: 3}
   ItemName: "\uB179\uCC28"
-  remaining: 1
+  remaining: 5
   purchasePrice: 500
   sellPrice: 1200
   satisfaction: 2
