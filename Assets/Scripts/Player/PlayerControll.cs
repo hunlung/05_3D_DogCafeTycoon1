@@ -3,17 +3,19 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 public class PlayerControll : MonoBehaviour
 {
     [SerializeField] float speed = 7f;
     private float currentRotationAngle = 0f;
     private float targetRotationAngle = 0f;
-    private readonly float rotationSpeed = 90f; 
+    private readonly float rotationSpeed = 90f;
+    
     private Coroutine rotateCoroutine;
 
-
     private Vector2 moveDirection;
+
     private PlayerInput playerInput;
     private Camera mainCamera;
     TimeManager timemanager;
@@ -37,7 +39,6 @@ public class PlayerControll : MonoBehaviour
         playerInput.Player.Q.performed += OnLeftAngle;
         playerInput.Player.E.performed += OnRightAngle;
         playerInput.Player.LeftClick.performed += OnClick;
-        playerInput.Player.RightClick.performed += OnRightClick;
         playerInput.Player.MouseWheel.performed += OnCameraZoom;
         playerInput.Player._1.performed += StoreInfo;
         playerInput.Player._2.performed += RemainStockInfo;
@@ -62,7 +63,6 @@ public class PlayerControll : MonoBehaviour
         playerInput.Player.Q.performed -= OnLeftAngle;
         playerInput.Player.E.performed -= OnRightAngle;
         playerInput.Player.LeftClick.performed -= OnClick;
-        playerInput.Player.RightClick.performed -= OnRightClick;
         playerInput.Player.MouseWheel.performed -= OnCameraZoom;
         playerInput.Player._1.performed -= StoreInfo;
         playerInput.Player._2.performed -= RemainStockInfo;
@@ -101,12 +101,19 @@ public class PlayerControll : MonoBehaviour
     {
     }
 
-    private void OnRightClick(InputAction.CallbackContext context)
-    {
-    }
+
 
     private void OnClick(InputAction.CallbackContext context)
     {
+        //TODO:: 위치 제대로맞추기
+        Vector3 position = Input.mousePosition;
+        Debug.Log(position);
+        Debug.DrawRay(position, new Vector3(0, 0, 0), Color.red);
+        if( Physics.Raycast(position, new Vector3(0, 0, 0), 3))
+        {
+            Debug.Log("쿠션충돌");
+        }
+
     }
     private void OnRightAngle(InputAction.CallbackContext context)
     {

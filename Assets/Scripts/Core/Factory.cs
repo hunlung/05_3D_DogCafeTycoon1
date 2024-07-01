@@ -4,7 +4,8 @@ public class Factory : Singleton<Factory>
 {
 
     CorgiPool corgiPool;
-
+    CurPool curPool;
+    ShepherdPool shepherdPool;
 
     protected override void OnInitialize()
     {
@@ -12,6 +13,10 @@ public class Factory : Singleton<Factory>
 
         corgiPool = GetComponentInChildren<CorgiPool>();
         corgiPool?.Initialize();
+        curPool = GetComponentInChildren<CurPool>();
+        curPool?.Initialize();
+        shepherdPool = GetComponentInChildren<ShepherdPool>();
+        shepherdPool?.Initialize();
 
     }
 
@@ -22,6 +27,16 @@ public class Factory : Singleton<Factory>
 
         return dog;
 
+    }
+    public DogBase GetCur()
+    {
+        DogBase dog = curPool?.GetObject();
+        return dog;
+    }
+    public DogBase GetShephered()
+    {
+        DogBase dog = shepherdPool?.GetObject();
+        return dog;
     }
 
 

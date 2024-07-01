@@ -549,7 +549,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6349384442204505658, guid: cc6b3e636f70b5044994ea3e192717ac, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.76
+      value: -2.223
       objectReference: {fileID: 0}
     - target: {fileID: 6349384442204505658, guid: cc6b3e636f70b5044994ea3e192717ac, type: 3}
       propertyPath: m_LocalPosition.y
@@ -729,12 +729,6 @@ MonoBehaviour:
   goStoreProbBasic: 0.2
   goStoreProb: 41
   orderLike: 0.4
-  isRight: 0
-  goStore: 0
-  inStore: 0
-  isWaiting: 0
-  goCushion: 0
-  isLeave: 0
   cushions: []
 --- !u!4 &70933790 stripped
 Transform:
@@ -7795,12 +7789,6 @@ MonoBehaviour:
   goStoreProbBasic: 0.2
   goStoreProb: 41
   orderLike: 0.4
-  isRight: 0
-  goStore: 0
-  inStore: 0
-  isWaiting: 0
-  goCushion: 0
-  isLeave: 0
   cushions: []
 --- !u!4 &1416556718 stripped
 Transform:
@@ -9316,12 +9304,6 @@ MonoBehaviour:
   goStoreProbBasic: 0.2
   goStoreProb: 41
   orderLike: 0.4
-  isRight: 0
-  goStore: 0
-  inStore: 0
-  isWaiting: 0
-  goCushion: 0
-  isLeave: 0
   cushions: []
 --- !u!4 &1725054959 stripped
 Transform:
@@ -9957,12 +9939,6 @@ MonoBehaviour:
   goStoreProbBasic: 0.2
   goStoreProb: 41
   orderLike: 0.4
-  isRight: 0
-  goStore: 0
-  inStore: 0
-  isWaiting: 0
-  goCushion: 0
-  isLeave: 0
   cushions: []
 --- !u!4 &1848512081 stripped
 Transform:

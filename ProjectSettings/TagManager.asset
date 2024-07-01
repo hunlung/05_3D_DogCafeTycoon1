@@ -20,11 +20,12 @@ TagManager:
   - DrinkPanel
   - MedicinePanel
   - Cushion
+  - CuffeMachine
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Cushion
   - Water
   - UI
   - 

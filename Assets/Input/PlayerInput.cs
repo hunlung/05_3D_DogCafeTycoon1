@@ -64,15 +64,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""RightClick"",
-                    ""type"": ""Button"",
-                    ""id"": ""1dac9fe0-3a1a-40bc-b792-8e70b32b9814"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""1"",
                     ""type"": ""Button"",
                     ""id"": ""e568a6d8-bce5-4fb8-80e6-476e55f700c7"",
@@ -215,17 +206,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""0c428cc6-2e49-4983-a188-063c40142ce3"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -432,7 +412,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Q = m_Player.FindAction("Q", throwIfNotFound: true);
         m_Player_E = m_Player.FindAction("E", throwIfNotFound: true);
         m_Player_LeftClick = m_Player.FindAction("LeftClick", throwIfNotFound: true);
-        m_Player_RightClick = m_Player.FindAction("RightClick", throwIfNotFound: true);
         m_Player__1 = m_Player.FindAction("1", throwIfNotFound: true);
         m_Player__2 = m_Player.FindAction("2", throwIfNotFound: true);
         m_Player_MouseWheel = m_Player.FindAction("MouseWheel", throwIfNotFound: true);
@@ -512,7 +491,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Q;
     private readonly InputAction m_Player_E;
     private readonly InputAction m_Player_LeftClick;
-    private readonly InputAction m_Player_RightClick;
     private readonly InputAction m_Player__1;
     private readonly InputAction m_Player__2;
     private readonly InputAction m_Player_MouseWheel;
@@ -526,7 +504,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Q => m_Wrapper.m_Player_Q;
         public InputAction @E => m_Wrapper.m_Player_E;
         public InputAction @LeftClick => m_Wrapper.m_Player_LeftClick;
-        public InputAction @RightClick => m_Wrapper.m_Player_RightClick;
         public InputAction @_1 => m_Wrapper.m_Player__1;
         public InputAction @_2 => m_Wrapper.m_Player__2;
         public InputAction @MouseWheel => m_Wrapper.m_Player_MouseWheel;
@@ -553,9 +530,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @LeftClick.started += instance.OnLeftClick;
             @LeftClick.performed += instance.OnLeftClick;
             @LeftClick.canceled += instance.OnLeftClick;
-            @RightClick.started += instance.OnRightClick;
-            @RightClick.performed += instance.OnRightClick;
-            @RightClick.canceled += instance.OnRightClick;
             @_1.started += instance.On_1;
             @_1.performed += instance.On_1;
             @_1.canceled += instance.On_1;
@@ -587,9 +561,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @LeftClick.started -= instance.OnLeftClick;
             @LeftClick.performed -= instance.OnLeftClick;
             @LeftClick.canceled -= instance.OnLeftClick;
-            @RightClick.started -= instance.OnRightClick;
-            @RightClick.performed -= instance.OnRightClick;
-            @RightClick.canceled -= instance.OnRightClick;
             @_1.started -= instance.On_1;
             @_1.performed -= instance.On_1;
             @_1.canceled -= instance.On_1;
@@ -722,7 +693,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnQ(InputAction.CallbackContext context);
         void OnE(InputAction.CallbackContext context);
         void OnLeftClick(InputAction.CallbackContext context);
-        void OnRightClick(InputAction.CallbackContext context);
         void On_1(InputAction.CallbackContext context);
         void On_2(InputAction.CallbackContext context);
         void OnMouseWheel(InputAction.CallbackContext context);

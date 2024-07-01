@@ -42,15 +42,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RightClick",
-                    "type": "Button",
-                    "id": "1dac9fe0-3a1a-40bc-b792-8e70b32b9814",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "1",
                     "type": "Button",
                     "id": "e568a6d8-bce5-4fb8-80e6-476e55f700c7",
@@ -193,17 +184,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0c428cc6-2e49-4983-a188-063c40142ce3",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

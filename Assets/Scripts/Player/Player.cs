@@ -6,6 +6,24 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private int previousMoney;
+    private int doggumSellCount;
+    //개껌 50개 팔면 황금개껌 해금
+    private int DogGumSellCount
+    {
+        get { return doggumSellCount; }
+        set
+        {
+            if(doggumSellCount != value)
+            {
+            doggumSellCount = value;
+            if(DogGumSellCount >= 50)
+                {
+                    ItemManager.Instance.GetItemByIndex<Item_Dessert>(3).itemCantBuy = false;
+                }
+            }
+
+        }
+    }
     private int money;
     public int Money
     {
@@ -53,6 +71,10 @@ public class Player : MonoBehaviour
                 Money += item[i].sellPrice;
                 item[i].remaining--;
                 TotalSatisfaction += item[i].satisfaction;
+                if (item[i].ItemType == ItemType.dessert && item[i].itemCode == 2)
+                {
+                    doggumSellCount++;
+                }
                 Debug.Log($"아이템 판매 완료, 남은 {item[i].name}의 개수: {item[i].remaining}개 ");
                 
             }
