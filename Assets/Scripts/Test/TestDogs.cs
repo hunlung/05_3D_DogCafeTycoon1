@@ -16,6 +16,7 @@ public class TestDogs : TestBase
     protected override void Ontest1(InputAction.CallbackContext context)
     {
         customerManager.CreateDog();
+        GameManager.Instance.TimeManager.StartTimeCycle();
     }
 
 

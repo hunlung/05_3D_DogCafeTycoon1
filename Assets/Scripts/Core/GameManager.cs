@@ -21,6 +21,7 @@ public class GameManager : Singleton<GameManager>
     public CustomerManager CustomerManager => customerManager;
 
     PlayerControll playerControll;
+    public bool isLastOrder = false;
 
     protected override void OnInitialize()
     {
@@ -32,20 +33,28 @@ public class GameManager : Singleton<GameManager>
         customerManager = transform.GetChild(3).GetComponent<CustomerManager>();
     }
 
+    public void StoreLastOrder()
+    {
+        isLastOrder = true;
+        customerManager.NightCreate();
+    }
 
 
     //날이 끝나면 작동
     public void DayEnd()
     {
         playerControll.enabled = false;
+        TimeManager.NextDay();
         TimeManager.CurrentHour = 9;
         TimeManager.CurrentMinute = Random.Range(0, 30);
         itemShopManager.PrepareStore();
+        customerManager.StopCreateDogs();
     }
     
     //다음날 영업 시작
     public void DayStart()
     {
+        isLastOrder = false;
         player.transform.position = new Vector3(0,player.transform.position.y,0);
         playerControll.enabled = true;
         timeManager.StartTimeCycle();

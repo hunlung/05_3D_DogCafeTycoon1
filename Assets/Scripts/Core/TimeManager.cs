@@ -50,11 +50,8 @@ public class TimeManager : MonoBehaviour
                     //바로 끝나지만 마지막 손님이 나가고 난후 끝나도록 바꿀 필요가 있음 + 연출.
                     StopAllCoroutines();
                     //가게 영업 준비 시작 + 낮으로 변경
-                    GameManager.Instance.DayEnd();
-                    Day += 1;
-                    CurrentSpeedImage.gameObject.SetActive(false);
-                    RenderSettings.skybox = daySkybox;
-                    isNight = false;
+                    GameManager.Instance.StoreLastOrder();
+
                 }
             }
         }
@@ -166,6 +163,13 @@ public class TimeManager : MonoBehaviour
         normalSpeedButton.onClick.AddListener(SetNormalTimeSpeed);
         doubleSpeedButton.onClick.AddListener(SetDoubleTimeSpeed);
         tripleSpeedButton.onClick.AddListener(SetTripleTimeSpeed);
+    }
+    public void NextDay()
+    {
+        Day += 1;
+        CurrentSpeedImage.gameObject.SetActive(false);
+        RenderSettings.skybox = daySkybox;
+        isNight = false;
     }
 
     // 시간 주기 시작

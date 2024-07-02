@@ -73,7 +73,8 @@ public class Player : MonoBehaviour
                 TotalSatisfaction += item[i].satisfaction;
                 if (item[i].ItemType == ItemType.dessert && item[i].itemCode == 2)
                 {
-                    doggumSellCount++;
+                    DogGumSellCount++;
+                    Debug.Log($"개껌 판매 +1,총판매개수{DogGumSellCount}");
                 }
                 Debug.Log($"아이템 판매 완료, 남은 {item[i].name}의 개수: {item[i].remaining}개 ");
                 
@@ -89,16 +90,8 @@ public class Player : MonoBehaviour
             }
             
         }
-        //모든 품목이 품절
-        if(soldOutCount == orderCount)
-        {
-            onSoldOut?.Invoke(orderCount);
-        }
-        //하나라도 팔았다면
-        else
-        {
+
             onSell?.Invoke(orderCount);
-        }
     }
     public Action<int> onSell;
     public Action<int> onSoldOut;

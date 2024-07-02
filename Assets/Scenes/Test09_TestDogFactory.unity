@@ -500,6 +500,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b140ece60ae774342865e3fb0d1d3038, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  secCorgi: 3.1
+  secCur: 4.3
+  secShephered: 5.1
 --- !u!114 &79924901 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5936059980514672181, guid: edf55301f501b1647af43c214e088c36, type: 3}

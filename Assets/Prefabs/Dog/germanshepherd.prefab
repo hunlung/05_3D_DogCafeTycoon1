@@ -2990,11 +2990,11 @@ MonoBehaviour:
   likeFood: {fileID: 11400000, guid: 1ace6de0b9a072b4d838183cf41916b5, type: 2}
   likeDrink: {fileID: 11400000, guid: 4c515858ec822514d94a97e2ec2241ff, type: 2}
   ChooseItems: []
-  Speed: 1.6
+  Speed: 3.2
   setRandomFloat: 0
   goRightProb: 0.2
-  goStoreProbBasic: 0.2
-  goStoreProb: 41
+  goStoreProbBasic: 0.09
+  goStoreProb: 0.01
   orderLike: 0.4
   cushions: []
 --- !u!1 &3806096244391514238
