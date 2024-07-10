@@ -20,5 +20,10 @@ public class TestDogs : TestBase
     }
 
 
+    protected override void Ontest2(InputAction.CallbackContext context)
+    {
+        GameManager.Instance.CustomerManager.TestDogset();
+    }
+
 
 }

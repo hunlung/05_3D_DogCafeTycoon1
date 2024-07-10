@@ -21,6 +21,8 @@ TagManager:
   - MedicinePanel
   - Cushion
   - CuffeMachine
+  - Clock
+  - Fimumers
   layers:
   - Default
   - TransparentFX

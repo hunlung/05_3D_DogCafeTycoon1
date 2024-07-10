@@ -2836,10 +2836,12 @@ MonoBehaviour:
   ChooseItems: []
   Speed: 2.6
   setRandomFloat: 0
-  goRightProb: 0.2
-  goStoreProbBasic: 0.12
-  goStoreProb: 0.01
-  orderLike: 0.4
+  goRightProb: 0.185
+  goStoreProbBasic: 1
+  goStoreProb: 1
+  orderLike: 0.2
+  isProcessing: 0
+  isNight: 0
   cushions: []
 --- !u!1 &3721364394073522470
 GameObject:

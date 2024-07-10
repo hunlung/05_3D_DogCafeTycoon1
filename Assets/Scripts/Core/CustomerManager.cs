@@ -78,4 +78,13 @@ public class CustomerManager : MonoBehaviour
     }
 
 
+    public void TestDogset()
+    {
+        Factory.Instance.GetCorgi();
+
+        Factory.Instance.GetCur();
+
+        Factory.Instance.GetShephered();
+    }
+
 }

@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
             }
             else if (item[i] == null)
             {
-                Debug.Log($"item{i}가 없습니다.");
+
             }
             else
             {

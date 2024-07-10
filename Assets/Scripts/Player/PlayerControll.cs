@@ -107,8 +107,6 @@ public class PlayerControll : MonoBehaviour
     {
         //TODO:: 위치 제대로맞추기
         Vector3 position = Input.mousePosition;
-        Debug.Log(position);
-        Debug.DrawRay(position, new Vector3(0, 0, 0), Color.red);
         if( Physics.Raycast(position, new Vector3(0, 0, 0), 3))
         {
             Debug.Log("쿠션충돌");
