@@ -93,8 +93,8 @@ public class TimeManager : MonoBehaviour
             OnDayChanged?.Invoke(Month, Day);
         }
     }
-    //5일 스타트
-    private int day = 5;
+    //5일 스타트(맨처음에 +1일)
+    private int day = 4;
     //달력의 31일,30일,28일 구현
     public int Day
     {

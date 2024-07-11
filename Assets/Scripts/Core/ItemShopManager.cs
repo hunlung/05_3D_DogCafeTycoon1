@@ -56,6 +56,10 @@ public class ItemShopManager : MonoBehaviour
 
     //구매 조건 텍스트
     TextMeshProUGUI requirementText;
+    public TextMeshProUGUI[] dessertRemainingTexts;
+    public TextMeshProUGUI[] drinkRemainingTexts;
+    public TextMeshProUGUI[] goodsRemainingTexts;
+    public TextMeshProUGUI[] medicineRemainingTexts;
 
     //업그레이드 패널 관련
     GameObject upgradeItemPanel;
@@ -78,13 +82,16 @@ public class ItemShopManager : MonoBehaviour
     [Header("가구 상점의 상품들")]
     [SerializeField] private Material[] colorMaterials;
     [SerializeField] private GameObject[] furniturelObjects;
+    [SerializeField] private GameObject[] furnitureles;
     [SerializeField] private GameObject[] decorationObjects;
     private TextMeshProUGUI furnitureBuyText;
-
     private int FurnitureiPanelController = 0;
     private TextMeshProUGUI[] furnitureLeftBarTexts;
     private int previousControllerNum = 0;
+    private bool[] furnitureActivated = new bool[5];
+    private bool[] decorationActivated = new bool[5];
 
+    [Header("상점관련")]
     public GameObject store;
     public MeshRenderer storeColor;
     public MeshRenderer storeDoorColor;
@@ -132,6 +139,28 @@ public class ItemShopManager : MonoBehaviour
 
         //조건 텍스트
         requirementText = requirementPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+
+        dessertRemainingTexts = new TextMeshProUGUI[dessertButtons.Length];
+        for (int i = 0; i < dessertButtons.Length; i++)
+        {
+            dessertRemainingTexts[i] = dessertButtons[i].transform.parent.GetChild(1).GetComponent<TextMeshProUGUI>();
+        }
+        drinkRemainingTexts = new TextMeshProUGUI[drinkButtons.Length];
+        for (int i = 0; i < drinkButtons.Length; i++)
+        {
+            drinkRemainingTexts[i] = drinkButtons[i].transform.parent.GetChild(1).GetComponent<TextMeshProUGUI>();
+        }
+        goodsRemainingTexts = new TextMeshProUGUI[goodsButtons.Length];
+        for (int i = 0; i < goodsButtons.Length; i++)
+        {
+            goodsRemainingTexts[i] = goodsButtons[i].transform.parent.GetChild(1).GetComponent<TextMeshProUGUI>();
+        }
+        medicineRemainingTexts = new TextMeshProUGUI[medicineButtons.Length];
+        for (int i = 0; i < medicineButtons.Length; i++)
+        {
+            medicineRemainingTexts[i] = medicineButtons[i].transform.parent.GetChild(1).GetComponent<TextMeshProUGUI>();
+        }
+
         //업그레이드패널
         Transform UpgradeTransform = ItemBuyPanel.transform.GetChild(2).GetChild(0).transform;
         upgradeItemPanel = ItemBuyPanel.transform.GetChild(2).gameObject;
@@ -191,7 +220,7 @@ public class ItemShopManager : MonoBehaviour
         furnitureDownButtons[3].onClick.AddListener(FourthButtonOnFurniturePanel);
         furnitureDownButtons[4].onClick.AddListener(FifthButtonOnFurniturePanel);
 
-        furnitureBuyButtons[0].onClick.AddListener(SettingFurnitures);
+        furnitureBuyButtons[0].onClick.AddListener(BuyFurnitrues);
         furnitureBuyButtons[1].onClick.AddListener(CloseBuyFurniturePanel);
 
         //각 세부 패널들의 버튼들
@@ -417,8 +446,10 @@ public class ItemShopManager : MonoBehaviour
 
     public void PrepareStore()
     {
+        Debug.Log("상점준비 시작");
         ItemShopPanel.SetActive(true);
         itemShopInput.Enable();
+        UpdateRemainingTexts();
     }
 
     private void CloseLackMoneyImage()
@@ -562,7 +593,42 @@ public class ItemShopManager : MonoBehaviour
             currentItem.remaining += currentItemCount;
             onChangedRemaining?.Invoke(currentItem.remaining);
             ItemBuyPanel.SetActive(false);
+
+            //재고 업데이트
+            if (currentItem is Item_Dessert)
+            {
+                int index = System.Array.IndexOf(ItemManager.Instance.runtimeDessertItems, currentItem);
+                if (index >= 0)
+                {
+                    dessertRemainingTexts[index].text = $"재고 : {currentItem.remaining}개";
+                }
+            }
+            else if (currentItem is Item_Drink)
+            {
+                int index = System.Array.IndexOf(ItemManager.Instance.runtimeDrinkItems, currentItem);
+                if (index >= 0)
+                {
+                    drinkRemainingTexts[index].text = $"재고 : {currentItem.remaining}개";
+                }
+            }
+            else if (currentItem is Item_Goods)
+            {
+                int index = System.Array.IndexOf(ItemManager.Instance.runtimeGoodsItems, currentItem);
+                if (index >= 0)
+                {
+                    goodsRemainingTexts[index].text = $"재고 : {currentItem.remaining}개";
+                }
+            }
+            else if (currentItem is Item_Medicine)
+            {
+                int index = System.Array.IndexOf(ItemManager.Instance.runtimeMedicineItems, currentItem);
+                if (index >= 0)
+                {
+                    medicineRemainingTexts[index].text = $"재고 : {currentItem.remaining}개";
+                }
+            }
         }
+
         else
         {
             lackMoneyImage.SetActive(true);
@@ -606,6 +672,30 @@ public class ItemShopManager : MonoBehaviour
         upgradeItemPanel.SetActive(false);
     }
 
+    //-------------------------------------상점 재고 업데이트
+    private void UpdateRemainingTexts()
+    {
+        for (int i = 0; i < ItemManager.Instance.runtimeDessertItems.Length; i++)
+        {
+            dessertRemainingTexts[i].text = $"재고 : {ItemManager.Instance.runtimeDessertItems[i].remaining}개";
+        }
+
+        for (int i = 0; i < ItemManager.Instance.runtimeDrinkItems.Length; i++)
+        {
+            drinkRemainingTexts[i].text = $"재고 : {ItemManager.Instance.runtimeDrinkItems[i].remaining}개";
+        }
+
+        for (int i = 0; i < ItemManager.Instance.runtimeGoodsItems.Length; i++)
+        {
+            goodsRemainingTexts[i].text = $"재고 : {ItemManager.Instance.runtimeGoodsItems[i].remaining}개";
+        }
+
+        for (int i = 0; i < ItemManager.Instance.runtimeMedicineItems.Length; i++)
+        {
+            medicineRemainingTexts[i].text = $"재 고: {ItemManager.Instance.runtimeMedicineItems[i].remaining}개";
+        }
+    }
+
     //------------------가구상점 관련,왼쪽패널
     private void ChangeCafeThemePanel()
     {
@@ -641,6 +731,7 @@ public class ItemShopManager : MonoBehaviour
             }
         }
         previousControllerNum = 0;
+        UpdateButtonStates();
     }
 
     private void ChangeFurniturePanel()
@@ -665,7 +756,7 @@ public class ItemShopManager : MonoBehaviour
         }
         FurnitureiPanelController = 2;
         previousControllerNum = 1;
-
+        UpdateButtonStates();
 
     }
 
@@ -691,13 +782,12 @@ public class ItemShopManager : MonoBehaviour
         }
         FurnitureiPanelController = 3;
         previousControllerNum = 2;
-
+        UpdateButtonStates();
     }
 
     //------------------가구상점관련, 아래쪽 패널
     private void FirstButtonOnFurniturePanel()
     {
-
         switch (FurnitureiPanelController)
         {
             case 1:
@@ -706,14 +796,16 @@ public class ItemShopManager : MonoBehaviour
                 CounterColor.material = colorMaterials[5];
                 break;
             case 2:
-                OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(0));
+                if (!furnitureActivated[0])
+                    OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(0));
                 break;
             case 3:
-                OpenFurniturePanel(ItemManager.Instance.GetDecorationPrice(0));
+                if (!decorationActivated[0])
+                    OpenFurniturePanel(ItemManager.Instance.GetDecorationPrice(0));
                 break;
         }
     }
-    
+
     private void SecondButtonOnFurniturePanel()
     {
         switch (FurnitureiPanelController)
@@ -723,16 +815,17 @@ public class ItemShopManager : MonoBehaviour
                 storeDoorColor.material = colorMaterials[1];
                 CounterColor.material = colorMaterials[0];
                 break;
-
             case 2:
-                OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(1));
+                if (!furnitureActivated[1])
+                    OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(1));
                 break;
-
             case 3:
-                
+                if (!decorationActivated[1])
+                    OpenFurniturePanel(ItemManager.Instance.GetDecorationPrice(1));
                 break;
         }
     }
+
     private void ThirdButtonOnFurniturePanel()
     {
         switch (FurnitureiPanelController)
@@ -802,16 +895,75 @@ public class ItemShopManager : MonoBehaviour
     {
         furnitureBuyPanel?.SetActive(false);
     }
-    private void SettingFurnitures()
-    {
-        //TODO:: 구매누르면 2일때 바닥 그리드, 3일때 벽 그리드 켜지고 설치가능이면 초록색, 아니면 빨간색,겹치게 설치 불가능,
-        //커피포트는 1개만, 카운터 뒤쪽에만 설치가능.
-    }
 
     private void BuyFurnitrues()
     {
-        //세팅시 여기서 돈 지출
+        if (player.Money >= currentItemPrice)
+        {
+            player.Money -= currentItemPrice;
+
+            switch (FurnitureiPanelController)
+            {
+                case 2: // 가구
+                    ActivateFurniture();
+                    break;
+                case 3: // 장식
+                    ActivateDecoration();
+                    break;
+            }
+
+            CloseBuyFurniturePanel();
+            UpdateButtonStates();
+        }
+        else
+        {
+            lackMoneyImage.SetActive(true);
+        }
     }
 
+    private void ActivateFurniture()
+    {
+        for (int i = 0; i < furniturelObjects.Length; i++)
+        {
+            if (!furnitureActivated[i])
+            {
+                furniturelObjects[i].SetActive(true);
+                furnitureActivated[i] = true;
+                break;
+            }
+        }
+    }
+
+    private void ActivateDecoration()
+    {
+        for (int i = 0; i < decorationObjects.Length; i++)
+        {
+            if (!decorationActivated[i])
+            {
+                decorationObjects[i].SetActive(true);
+                decorationActivated[i] = true;
+                break;
+            }
+        }
+    }
+
+    private void UpdateButtonStates()
+    {
+        for (int i = 0; i < furnitureDownButtons.Length; i++)
+        {
+            if (FurnitureiPanelController == 2)
+            {
+                furnitureDownButtons[i].interactable = !furnitureActivated[i];
+            }
+            else if (FurnitureiPanelController == 3)
+            {
+                furnitureDownButtons[i].interactable = !decorationActivated[i];
+            }
+            else
+            {
+                furnitureDownButtons[i].interactable = true;
+            }
+        }
+    }
 
 }

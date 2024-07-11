@@ -1,13 +1,15 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TestCV : TestBase
+public class TestStore : TestBase
 {
     protected override void Ontest1(InputAction.CallbackContext context)
     {
-
+       
+        GameManager.Instance.ItemShopManager.PrepareStore();
     }
     protected override void Ontest2(InputAction.CallbackContext context)
     {

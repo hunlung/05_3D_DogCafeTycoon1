@@ -34,6 +34,11 @@ public class Cushion : MonoBehaviour
         cleaningText = canvasChild.GetChild(2).GetComponent<TextMeshPro>();
         DogFood = canvasChild.GetChild(3).gameObject;
     }
+    private void OnEnable()
+    {
+        GameManager.Instance.onDayEnd += ClearingEnd;        
+    }
+
 
     //레벨에 따른 청소시간 감소
     private void SetCushionClearTime(int level)

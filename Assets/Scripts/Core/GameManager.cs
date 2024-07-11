@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -23,6 +25,7 @@ public class GameManager : Singleton<GameManager>
     PlayerControll playerControll;
     public bool isLastOrder = false;
 
+    public Action onDayEnd;
     protected override void OnInitialize()
     {
         player = FindAnyObjectByType<Player>();
@@ -37,6 +40,7 @@ public class GameManager : Singleton<GameManager>
     {
         isLastOrder = true;
         customerManager.NightCreate();
+        customerManager.StartCheckDogs();
     }
 
 
@@ -48,7 +52,8 @@ public class GameManager : Singleton<GameManager>
         TimeManager.CurrentHour = 9;
         TimeManager.CurrentMinute = Random.Range(0, 30);
         itemShopManager.PrepareStore();
-        customerManager.StopCreateDogs();
+        customerManager.StopAllCoroutine();
+        onDayEnd?.Invoke();
     }
     
     //다음날 영업 시작
