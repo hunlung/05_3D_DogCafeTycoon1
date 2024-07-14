@@ -23,6 +23,7 @@ TagManager:
   - CuffeMachine
   - Clock
   - Fimumers
+  - GameImportantUI
   layers:
   - Default
   - TransparentFX

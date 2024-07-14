@@ -53,7 +53,6 @@ public class DogBase : RecycleObject
     int orderCount = 0;
     int watingNumber = 5;
 
-    //private로 바꾸고 나중에 test변경 TODO::
     private bool isRight = false;
     private bool goStore = false;
     private bool inStore = false;
@@ -95,6 +94,7 @@ public class DogBase : RecycleObject
     //초기화 작업
     private void Initialize()
     {
+        cushions = FindObjectsOfType<Cushion>();
         isRight = false;
         goStore = false;
         inStore = false;
@@ -106,7 +106,6 @@ public class DogBase : RecycleObject
         usedCushion = false;
         isNight = false;
         isProcessing = false;
-        StopAllCoroutines();
         dogQuestionMark.SetActive(false);
         watingNumber = 5;
         if (store == null)
@@ -118,6 +117,7 @@ public class DogBase : RecycleObject
         {
             isNight = true;
         }
+        StopAllCoroutines();
     }
 
 
@@ -132,7 +132,6 @@ public class DogBase : RecycleObject
     {
         player = GameManager.Instance.Player;
         player.onSell += FindCushionOrWatingChange;
-        cushions = FindObjectsOfType<Cushion>();
         likeFood = ItemManager.Instance.GetItemByIndex<Item_Dessert>(likeFood.itemCode);
         likeDrink = ItemManager.Instance.GetItemByIndex<Item_Drink>(likeDrink.itemCode);
     }
@@ -512,6 +511,7 @@ public class DogBase : RecycleObject
     }
 
     //============== 의자찾아서 앉거나 가게 떠나기 및 줄변경
+    //TODO:: 현재 개풀이 한바퀴 돌아 1번개부터 다시시작할 시 가게 도착하자마자 쿠션으로 갈 확률이 있는 오류 존재
     private void FindCushionOrWatingChange(int number)
     {
         if (isProcessing) // 실행 중인지 확인

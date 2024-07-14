@@ -118,27 +118,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
 
 
 // 싱글톤은 무조건 객체가 1개이어야 한다.
-public class TestSingleton
-{
-    private static TestSingleton instance = null;
 
-    public static TestSingleton Instance
-    {
-        get
-        {
-            if (instance == null)   // 이전에 인스턴스가 만들어진 적이 없으면
-            {
-                instance = new TestSingleton(); // 인스턴스 생성
-            }
-            return instance;
-        }
-    }
-
-    private TestSingleton()
-    {
-        // 객체가 중복으로 생성되는 것을 방지하기 위해 생성자를 private으로 한다.(기본 생성자가 만들어지는 것을 방지)
-    }
-}
 
 //TestSingleton a = new TestSingleton();
 //TestSingleton b = new TestSingleton();

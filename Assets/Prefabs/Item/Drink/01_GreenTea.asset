@@ -24,5 +24,4 @@ MonoBehaviour:
   upgradeEfficiency: 0.5
   itemCantBuy: 0
   requirementinfo: 
-  ItemInfo: "\uD3C9\uBC94\uD55C \uB179\uCC28,\uC774\uACF3\uC758 \uBAA8\uB4E0\uC74C\uB8CC\uB294
-    \uCE74\uD398\uC778\uC744 \uBE80\uB2E4."
+  ItemInfo: "\uD3C9\uBC94\uD55C \uB179\uCC28 \uB9DB \uC74C\uB8CC\uC218,\uB17C\uCE74\uD398\uC778\uC774\uB2E4."

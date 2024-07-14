@@ -15,6 +15,11 @@ public class MoneyPanel : MonoBehaviour
 
     private void Start()
     {
+        SetMoneyPanel();
+    }
+
+    public void SetMoneyPanel()
+    {
         player = GameManager.Instance.Player;
         player.OnMoneyChange += ShowMoneyChange;
         text = transform.GetChild(1).GetComponent<TextMeshProUGUI>();

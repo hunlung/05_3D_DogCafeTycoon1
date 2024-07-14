@@ -19,9 +19,9 @@ MonoBehaviour:
   remaining: 5
   purchasePrice: 500
   sellPrice: 2000
-  satisfaction: 1
+  satisfaction: 2
   upgradePrice: 7500
   upgradeEfficiency: 0.1
   itemCantBuy: 1
   requirementinfo: "\uCEE4\uD53C \uBA38\uC2E0 \uAD6C\uB9E4"
-  ItemInfo: "\uAC1C\uB4E4\uC774 \uBCC4\uB85C \uC88B\uC544\uD558\uC9C0\uC54A\uB294\uB2E4."
+  ItemInfo: "\uCE74\uD398\uC778?"

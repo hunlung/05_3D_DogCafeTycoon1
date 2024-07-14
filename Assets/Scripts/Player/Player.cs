@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public int[] profits = new int[5];
+    public int[] recorededTime = new int[5];
+    private int lastRecordedMoney = 0;
+    public int currentProfitIndex = 0;
+
+
     private int previousMoney;
     private int doggumSellCount;
     //개껌 50개 팔면 황금개껌 해금
@@ -13,12 +19,13 @@ public class Player : MonoBehaviour
         get { return doggumSellCount; }
         set
         {
-            if(doggumSellCount != value)
+            if (doggumSellCount != value)
             {
-            doggumSellCount = value;
-            if(DogGumSellCount >= 50)
+                doggumSellCount = value;
+                if (DogGumSellCount >= 50)
                 {
                     ItemManager.Instance.GetItemByIndex<Item_Dessert>(3).itemCantBuy = false;
+                    GameManager.Instance.ItemShopManager.GoldDogGumActivate();
                 }
             }
 
@@ -44,6 +51,8 @@ public class Player : MonoBehaviour
     private void Start()
     {
         Money += 20000;
+        DontDestroyOnLoad(gameObject);
+        GameManager.Instance.TimeManager.onHourChanged += RecordProfit;
     }
 
     private float totalSatisfaction;
@@ -60,7 +69,6 @@ public class Player : MonoBehaviour
     }
 
 
-    //주문한게 둘다 없으면 바로 가게 떠나게 하기TODO::
     public void SellItem(ItemBase[] item, int orderCount)
     {
         int soldOutCount = 0;
@@ -77,7 +85,7 @@ public class Player : MonoBehaviour
                     Debug.Log($"개껌 판매 +1,총판매개수{DogGumSellCount}");
                 }
                 Debug.Log($"아이템 판매 완료, 남은 {item[i].name}의 개수: {item[i].remaining}개 ");
-                
+
             }
             else if (item[i] == null)
             {
@@ -85,17 +93,46 @@ public class Player : MonoBehaviour
             }
             else
             {
-             Debug.Log($"{item[i].name}이 다 떨어졌습니다.");
+                Debug.Log($"{item[i].name}이 다 떨어졌습니다.");
                 soldOutCount++;
             }
-            
+
         }
 
-            onSell?.Invoke(orderCount);
+        onSell?.Invoke(orderCount);
     }
+
     public Action<int> onSell;
     public Action<int> onSoldOut;
+    public Action<int> onRecorded;
 
+    //시간당 수익 기록
+    public void RecordProfit()
+    {
+        int currentProfit = Money - lastRecordedMoney;
+        profits[currentProfitIndex] = currentProfit;
+        recorededTime[currentProfitIndex] = GameManager.Instance.TimeManager.CurrentHour;
+        currentProfitIndex = (currentProfitIndex + 1) % 5;
+
+        lastRecordedMoney = Money; // 현재 돈을 마지막 기록된 돈으로 업데이트
+        onRecorded?.Invoke(currentProfit);
+    }
+    //날 시작시 설정
+    public void SetLastRecordMoney()
+    {
+        lastRecordedMoney = Money;
+    }
+    //날 변경시 초기화
+    public void ResetProfitRecords()
+    {
+        for (int i = 0; i < profits.Length; i++)
+        {
+            profits[i] = 0;
+        }
+        currentProfitIndex = 0;
+        lastRecordedMoney = Money;
+
+    }
 
 
 }

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
@@ -19,7 +20,8 @@ public class PlayerControll : MonoBehaviour
     private PlayerInput playerInput;
     private Camera mainCamera;
     TimeManager timemanager;
-
+    GameObject remainingPanel;
+    GameObject MissionObjectPanel;
     private void Awake()
     {
         playerInput = new PlayerInput();
@@ -40,8 +42,8 @@ public class PlayerControll : MonoBehaviour
         playerInput.Player.E.performed += OnRightAngle;
         playerInput.Player.LeftClick.performed += OnClick;
         playerInput.Player.MouseWheel.performed += OnCameraZoom;
-        playerInput.Player._1.performed += StoreInfo;
-        playerInput.Player._2.performed += RemainStockInfo;
+        playerInput.Player._1.performed += RemainStockInfo;
+        playerInput.Player._2.performed += MissionObject;
         playerInput.Player.V.performed += ChangeTimeSpeed;
         playerInput.Player.Space.performed += StopTimeSpeed;
     }
@@ -64,8 +66,8 @@ public class PlayerControll : MonoBehaviour
         playerInput.Player.E.performed -= OnRightAngle;
         playerInput.Player.LeftClick.performed -= OnClick;
         playerInput.Player.MouseWheel.performed -= OnCameraZoom;
-        playerInput.Player._1.performed -= StoreInfo;
-        playerInput.Player._2.performed -= RemainStockInfo;
+        playerInput.Player._1.performed -= RemainStockInfo;
+        playerInput.Player._2.performed -= MissionObject;
         playerInput.Player.V.performed -= ChangeTimeSpeed;
         playerInput.Player.Space.performed -= StopTimeSpeed;
         playerInput.Disable();
@@ -95,24 +97,54 @@ public class PlayerControll : MonoBehaviour
 
     private void RemainStockInfo(InputAction.CallbackContext context)
     {
+        if(remainingPanel == null)
+        {
+        remainingPanel = GameObject.FindGameObjectWithTag("GameImportantUI").transform.GetChild(0).gameObject;
+        }
+        if (!remainingPanel.activeSelf)
+        {
+            remainingPanel.SetActive(true);
+        }
+        else
+        {
+            remainingPanel.SetActive(false);
+        }
     }
 
-    private void StoreInfo(InputAction.CallbackContext context)
+    private void MissionObject(InputAction.CallbackContext context)
     {
+        if(MissionObjectPanel == null)
+        {
+            MissionObjectPanel = GameObject.FindWithTag("GameImportantUI").transform.GetChild(1).gameObject;
+        }
+        if (!MissionObjectPanel.activeSelf)
+        {
+            MissionObjectPanel.SetActive(true);
+        }
+        else
+        {
+            MissionObjectPanel.SetActive(false);
+        }
     }
 
 
 
     private void OnClick(InputAction.CallbackContext context)
     {
-        //TODO:: 위치 제대로맞추기
-        Vector3 position = Input.mousePosition;
-        if( Physics.Raycast(position, new Vector3(0, 0, 0), 3))
-        {
-            Debug.Log("쿠션충돌");
-        }
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        RaycastHit hit;
 
+        if (Physics.Raycast(ray, out hit))
+        {
+            Cushion cushion = hit.collider.GetComponent<Cushion>();
+            if (cushion != null)
+            {
+                cushion.ClearingStart();
+                Debug.Log("쿠션클릭");
+            }
+        }
     }
+
     private void OnRightAngle(InputAction.CallbackContext context)
     {
         targetRotationAngle += 25f;
@@ -165,6 +197,19 @@ public class PlayerControll : MonoBehaviour
         mainCamera.transform.eulerAngles = targetRotation;
         rotateCoroutine = null;
     }
+    public void DisableAction()
+    {
+        playerInput.Player.Disable();
+    }
 
+    public void EnableAction()
+    {
+        playerInput.Player.Enable();
+    }
+    
+    public void EnableWASD()
+    {
+        playerInput.FindAction("WASD").Enable();
+    }
 
 }

@@ -90,7 +90,11 @@ public class ItemShopManager : MonoBehaviour
     private int previousControllerNum = 0;
     private bool[] furnitureActivated = new bool[5];
     private bool[] decorationActivated = new bool[5];
-
+    private int currentButtonIndex;
+    private int furnitureCusionCount = 0;
+    [Header("쿠션개수")]
+    [SerializeField] private int furnitureCusionMAX = 6;
+    private GameObject chooseFurniture;
     [Header("상점관련")]
     public GameObject store;
     public MeshRenderer storeColor;
@@ -104,16 +108,12 @@ public class ItemShopManager : MonoBehaviour
         itemShopInput = new PlayerInput();
     }
 
-    private void Start()
+
+
+    public void SetupUI()
     {
+
         player = GameManager.Instance.Player;
-        SetupUI();
-        SetupButtonListeners();
-    }
-
-
-    private void SetupUI()
-    {
         GameObject Canvas = GameObject.FindGameObjectWithTag("Canvas");
         ItemShopPanel = Canvas.transform.GetChild(0).gameObject;
         dessertPanel = Canvas.transform.GetChild(1).gameObject;
@@ -122,10 +122,10 @@ public class ItemShopManager : MonoBehaviour
         medicinePanel = Canvas.transform.GetChild(4).gameObject;
         ItemBuyPanel = Canvas.transform.GetChild(5).gameObject;
         requirementPanel = Canvas.transform.GetChild(6).gameObject;
-        lackMoneyImage = Canvas.transform.GetChild(7).gameObject;
+        lackMoneyImage = Canvas.transform.GetChild(10).gameObject;
         lackMoneyButton = lackMoneyImage.GetComponentInChildren<Button>();
         storeFurniturePanel = Canvas.transform.GetChild(9).gameObject;
-        furnitureBuyPanel = Canvas.transform.GetChild(10).gameObject;
+        furnitureBuyPanel = Canvas.transform.GetChild(8).gameObject;
         //아이템 구매패널
         Transform itemBuyTransform;
         itemBuyTransform = ItemBuyPanel.transform.GetChild(1).transform;
@@ -184,6 +184,7 @@ public class ItemShopManager : MonoBehaviour
         }
         furnitureBuyText = furnitureBuyPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
 
+        SetupButtonListeners();
     }
 
     private void SetupButtonListeners()
@@ -424,6 +425,7 @@ public class ItemShopManager : MonoBehaviour
 
     private void ReturnItemShop(InputAction.CallbackContext context)
     {
+        GameManager.Instance.PlayerControl.DisableAction();
         if (!ItemShopPanel.activeSelf && !ItemBuyPanel.activeSelf && !requirementPanel.activeSelf)
         {
             Button returnbutton = GameObject.FindGameObjectWithTag("ReturnButton").GetComponent<Button>();
@@ -449,6 +451,7 @@ public class ItemShopManager : MonoBehaviour
         Debug.Log("상점준비 시작");
         ItemShopPanel.SetActive(true);
         itemShopInput.Enable();
+        GameManager.Instance.PlayerControl.DisableAction();
         UpdateRemainingTexts();
     }
 
@@ -483,6 +486,8 @@ public class ItemShopManager : MonoBehaviour
         ItemShopPanel.SetActive(false);
         player.transform.position = new Vector3(0, 10, 0);
         storeFurniturePanel.SetActive(true);
+        GameManager.Instance.PlayerControl.EnableWASD();
+
         ChangeCafeThemePanel();
 
     }
@@ -788,6 +793,7 @@ public class ItemShopManager : MonoBehaviour
     //------------------가구상점관련, 아래쪽 패널
     private void FirstButtonOnFurniturePanel()
     {
+        currentButtonIndex = 0;
         switch (FurnitureiPanelController)
         {
             case 1:
@@ -797,17 +803,24 @@ public class ItemShopManager : MonoBehaviour
                 break;
             case 2:
                 if (!furnitureActivated[0])
+                {
                     OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(0));
+                    chooseFurniture = furnitureles[furnitureles.Length - 2];
+                }
                 break;
             case 3:
                 if (!decorationActivated[0])
+                {
                     OpenFurniturePanel(ItemManager.Instance.GetDecorationPrice(0));
+                    chooseFurniture = furnitureles[furnitureles.Length - 1];
+                }
                 break;
         }
     }
 
     private void SecondButtonOnFurniturePanel()
     {
+        currentButtonIndex = 1;
         switch (FurnitureiPanelController)
         {
             case 1:
@@ -816,18 +829,23 @@ public class ItemShopManager : MonoBehaviour
                 CounterColor.material = colorMaterials[0];
                 break;
             case 2:
-                if (!furnitureActivated[1])
+                if (furnitureCusionCount < furnitureCusionMAX)
+                {
                     OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(1));
+                    chooseFurniture = furnitureles[furnitureCusionCount];
+                }
                 break;
             case 3:
-                if (!decorationActivated[1])
-                    OpenFurniturePanel(ItemManager.Instance.GetDecorationPrice(1));
                 break;
+
+
         }
     }
 
     private void ThirdButtonOnFurniturePanel()
     {
+        currentButtonIndex = 2;
+
         switch (FurnitureiPanelController)
         {
             case 1:
@@ -837,7 +855,11 @@ public class ItemShopManager : MonoBehaviour
                 break;
 
             case 2:
-                OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(2));
+                if (furnitureCusionCount < furnitureCusionMAX)
+                {
+                    OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(2));
+                    chooseFurniture = furnitureles[furnitureCusionCount];
+                }
                 break;
 
             case 3:
@@ -847,6 +869,7 @@ public class ItemShopManager : MonoBehaviour
     }
     private void FourthButtonOnFurniturePanel()
     {
+        currentButtonIndex = 3;
         switch (FurnitureiPanelController)
         {
             case 1:
@@ -855,7 +878,11 @@ public class ItemShopManager : MonoBehaviour
                 CounterColor.material = colorMaterials[2];
                 break;
             case 2:
-                OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(3));
+                if (furnitureCusionCount < furnitureCusionMAX)
+                {
+                    OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(3));
+                    chooseFurniture = furnitureles[furnitureCusionCount];
+                }
                 break;
 
             case 3:
@@ -865,6 +892,7 @@ public class ItemShopManager : MonoBehaviour
     }
     private void FifthButtonOnFurniturePanel()
     {
+        currentButtonIndex = 4;
         switch (FurnitureiPanelController)
         {
             case 1:
@@ -876,7 +904,7 @@ public class ItemShopManager : MonoBehaviour
             case 2:
                 OpenFurniturePanel(ItemManager.Instance.GetFurniturePrice(4));
                 break;
-
+                
             case 3: break;
 
         }
@@ -904,11 +932,12 @@ public class ItemShopManager : MonoBehaviour
 
             switch (FurnitureiPanelController)
             {
-                case 2: // 가구
-                    ActivateFurniture();
+                case 2: // 기능가구
+
+                    ActivateFurniture(currentButtonIndex);
                     break;
-                case 3: // 장식
-                    ActivateDecoration();
+                case 3: // 장식가구
+                    ActivateDecoration(currentButtonIndex);
                     break;
             }
 
@@ -921,29 +950,65 @@ public class ItemShopManager : MonoBehaviour
         }
     }
 
-    private void ActivateFurniture()
+    private void ActivateFurniture(int index)
     {
-        for (int i = 0; i < furniturelObjects.Length; i++)
+        if (index == 0 && !furnitureActivated[0])
         {
-            if (!furnitureActivated[i])
+            furniturelObjects[0].SetActive(true);
+            furnitureActivated[0] = true;
+            chooseFurniture.gameObject.SetActive(true);
+            ItemManager.Instance.GetItemByIndex<Item_Drink>(2).itemCantBuy = false;
+            ItemManager.Instance.GetItemByIndex<Item_Drink>(4).itemCantBuy = false;
+            Transform CanbuyTransform = drinkButtons[2].gameObject.transform.parent.GetChild(2).transform;
+            CanbuyTransform.gameObject.SetActive(false);
+            CanbuyTransform = drinkButtons[4].gameObject.transform.parent.GetChild(2).transform;
+            CanbuyTransform.gameObject.SetActive(false);
+        }
+        else if (index >= 1 && index <= 3)
+        {
+            furnitureCusionCount++;
+            UpgradeCushions(index);
+
+            if (furnitureCusionCount >= furnitureCusionMAX)
             {
-                furniturelObjects[i].SetActive(true);
-                furnitureActivated[i] = true;
-                break;
+                for (int i = 1; i <= 3; i++)
+                {
+                    furniturelObjects[i].SetActive(true);
+                    furnitureActivated[i] = true;
+                }
             }
         }
     }
 
-    private void ActivateDecoration()
+    private void UpgradeCushions(int level)
     {
-        for (int i = 0; i < decorationObjects.Length; i++)
-        {
-            if (!decorationActivated[i])
-            {
-                decorationObjects[i].SetActive(true);
-                decorationActivated[i] = true;
+        Vector3 position = chooseFurniture.transform.position;
+        Quaternion rotation = chooseFurniture.transform.rotation;
+        Transform parent = chooseFurniture.transform.parent;
+        switch (level)
+        { 
+            case 1:
+                chooseFurniture.SetActive(true);
                 break;
-            }
+            case 2:
+                Destroy(chooseFurniture);
+                GameObject newSuperCushion = Instantiate(furniturelObjects[2], position,rotation ,parent);
+                break;
+            case 3:
+                Destroy(chooseFurniture);
+                GameObject newPerfectCushion =  Instantiate(furniturelObjects[3], position,rotation, parent);
+                break;
+        }
+    }
+
+
+    private void ActivateDecoration(int index)
+    {
+        if (index >= 0 && index < decorationObjects.Length && !decorationActivated[index])
+        {
+            decorationObjects[index].SetActive(true);
+            decorationActivated[index] = true;
+            chooseFurniture.gameObject.SetActive(true);
         }
     }
 
@@ -953,7 +1018,14 @@ public class ItemShopManager : MonoBehaviour
         {
             if (FurnitureiPanelController == 2)
             {
-                furnitureDownButtons[i].interactable = !furnitureActivated[i];
+                if (i == 0 || i == 4)
+                {
+                    furnitureDownButtons[i].interactable = !furnitureActivated[i];
+                }
+                else // i가 1, 2, 3 일 때
+                {
+                    furnitureDownButtons[i].interactable = furnitureCusionCount < furnitureCusionMAX;
+                }
             }
             else if (FurnitureiPanelController == 3)
             {
@@ -964,6 +1036,12 @@ public class ItemShopManager : MonoBehaviour
                 furnitureDownButtons[i].interactable = true;
             }
         }
+    }
+
+
+    public void GoldDogGumActivate()
+    {
+        dessertButtons[3].gameObject.transform.parent.GetChild(2).gameObject.SetActive(false);
     }
 
 }

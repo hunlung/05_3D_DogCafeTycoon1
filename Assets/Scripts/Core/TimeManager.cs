@@ -25,12 +25,9 @@ public class TimeManager : MonoBehaviour
 
     public Action<int, int> OnTimeChanged; // 시간이 변경될 때 발생하는 이벤트
     public Action<int, int> OnDayChanged;
-
+    public Action onHourChanged;
     private int currentHour = 0; // 현재 시간 (시)
     
-    /// <summary>
-    /// TODO:: 시간이 끝나면 바로 일이 넘겨지는 중, 연출 변경 시 코드수정 필요
-    /// </summary>
     public int CurrentHour
     {
         get { return currentHour; }
@@ -40,6 +37,7 @@ public class TimeManager : MonoBehaviour
             {
                 currentHour = value;
                 OnTimeChanged?.Invoke(CurrentHour, CurrentMinute); // 시간 변경 이벤트 발생
+                onHourChanged?.Invoke();
                 if (currentHour >= nightStartHour && !isNight)
                 {
                     RenderSettings.skybox = nightSkybox; // 밤 하늘 스카이박스로 변경
@@ -145,9 +143,9 @@ public class TimeManager : MonoBehaviour
         nightStartHour = endHour - 2; // 밤 시작 시간 설정 (종료 시간 2시간 전)
     }
 
-    private void Start()
-    {
 
+    public void SetUI()
+    {
         GameObject gameSpeedButton = GameObject.FindGameObjectWithTag("GameSpeedButton");
         // 각 버튼 컴포넌트 가져오기
         stopSpeedButton = gameSpeedButton.transform.GetChild(0).GetComponent<Button>();
@@ -164,6 +162,7 @@ public class TimeManager : MonoBehaviour
         doubleSpeedButton.onClick.AddListener(SetDoubleTimeSpeed);
         tripleSpeedButton.onClick.AddListener(SetTripleTimeSpeed);
     }
+
     public void NextDay()
     {
         Day += 1;

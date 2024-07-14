@@ -18,11 +18,10 @@ MonoBehaviour:
   ItemName: "\uC544\uBA54\uB9AC\uCE74\uB178"
   remaining: 5
   purchasePrice: 1000
-  sellPrice: 2000
-  satisfaction: 4
+  sellPrice: 2200
+  satisfaction: 5
   upgradePrice: 8000
   upgradeEfficiency: 0.3
   itemCantBuy: 1
   requirementinfo: "\uCEE4\uD53C \uBA38\uC2E0 \uAD6C\uB9E4"
-  ItemInfo: "\uC5BC\uC74C\uC5C6\uB294 \uCC28\uAC00\uC6B4 \uC544\uBA54\uB9AC\uCE74\uB178,\uB728\uC544\uB294
-    \uD314\uC9C0\uC54A\uB294\uB2E4."
+  ItemInfo: "\uAD6D\uAC00\uAC00 \uD5C8\uB77D\uD55C \uB9C8\uC57D"
