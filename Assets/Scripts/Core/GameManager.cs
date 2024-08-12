@@ -38,8 +38,10 @@ public class GameManager : Singleton<GameManager>
         itemShopManager = transform.GetChild(1).GetComponent<ItemShopManager>();
         itemManager = transform.GetChild(2).GetComponent<ItemManager>();
         customerManager = transform.GetChild(3).GetComponent<CustomerManager>();
+
         ItemShopManager.SetupUI();
         timeManager.SetUI();
+        TimeManager.NextDay();
         ItemShopManager.PrepareStore();
 
 

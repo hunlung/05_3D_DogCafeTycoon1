@@ -697,7 +697,7 @@ public class ItemShopManager : MonoBehaviour
 
         for (int i = 0; i < ItemManager.Instance.runtimeMedicineItems.Length; i++)
         {
-            medicineRemainingTexts[i].text = $"재 고: {ItemManager.Instance.runtimeMedicineItems[i].remaining}개";
+            medicineRemainingTexts[i].text = $"재고 : {ItemManager.Instance.runtimeMedicineItems[i].remaining}개";
         }
     }
 

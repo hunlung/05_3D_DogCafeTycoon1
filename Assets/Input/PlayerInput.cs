@@ -107,6 +107,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ESC"",
+                    ""type"": ""Button"",
+                    ""id"": ""dfe8a6fb-64f0-4cdf-bd83-06c98712e338"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -250,6 +259,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Space"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9f5a128f-bd63-4e0f-9bbc-fdaa5ed1f905"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ESC"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -417,6 +437,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_MouseWheel = m_Player.FindAction("MouseWheel", throwIfNotFound: true);
         m_Player_V = m_Player.FindAction("V", throwIfNotFound: true);
         m_Player_Space = m_Player.FindAction("Space", throwIfNotFound: true);
+        m_Player_ESC = m_Player.FindAction("ESC", throwIfNotFound: true);
         // ItemShop
         m_ItemShop = asset.FindActionMap("ItemShop", throwIfNotFound: true);
         m_ItemShop__1 = m_ItemShop.FindAction("1", throwIfNotFound: true);
@@ -496,6 +517,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MouseWheel;
     private readonly InputAction m_Player_V;
     private readonly InputAction m_Player_Space;
+    private readonly InputAction m_Player_ESC;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -509,6 +531,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @MouseWheel => m_Wrapper.m_Player_MouseWheel;
         public InputAction @V => m_Wrapper.m_Player_V;
         public InputAction @Space => m_Wrapper.m_Player_Space;
+        public InputAction @ESC => m_Wrapper.m_Player_ESC;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -545,6 +568,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Space.started += instance.OnSpace;
             @Space.performed += instance.OnSpace;
             @Space.canceled += instance.OnSpace;
+            @ESC.started += instance.OnESC;
+            @ESC.performed += instance.OnESC;
+            @ESC.canceled += instance.OnESC;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -576,6 +602,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Space.started -= instance.OnSpace;
             @Space.performed -= instance.OnSpace;
             @Space.canceled -= instance.OnSpace;
+            @ESC.started -= instance.OnESC;
+            @ESC.performed -= instance.OnESC;
+            @ESC.canceled -= instance.OnESC;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -698,6 +727,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnMouseWheel(InputAction.CallbackContext context);
         void OnV(InputAction.CallbackContext context);
         void OnSpace(InputAction.CallbackContext context);
+        void OnESC(InputAction.CallbackContext context);
     }
     public interface IItemShopActions
     {

@@ -22,6 +22,7 @@ public class PlayerControll : MonoBehaviour
     TimeManager timemanager;
     GameObject remainingPanel;
     GameObject MissionObjectPanel;
+    [SerializeField] ESCPanel ESCPanel;
     private void Awake()
     {
         playerInput = new PlayerInput();
@@ -46,6 +47,19 @@ public class PlayerControll : MonoBehaviour
         playerInput.Player._2.performed += MissionObject;
         playerInput.Player.V.performed += ChangeTimeSpeed;
         playerInput.Player.Space.performed += StopTimeSpeed;
+        playerInput.Player.ESC.performed += CheckExitPanel;
+    }
+
+    private void CheckExitPanel(InputAction.CallbackContext context)
+    {
+        if (ESCPanel.CheckPanel())
+        {
+            ESCPanel.gameObject.SetActive(false);
+        }
+        else
+        {
+            ESCPanel.gameObject.SetActive(true);
+        }
     }
 
     private void StopTimeSpeed(InputAction.CallbackContext context)
@@ -70,6 +84,7 @@ public class PlayerControll : MonoBehaviour
         playerInput.Player._2.performed -= MissionObject;
         playerInput.Player.V.performed -= ChangeTimeSpeed;
         playerInput.Player.Space.performed -= StopTimeSpeed;
+        playerInput.Player.ESC.performed -= CheckExitPanel;
         playerInput.Disable();
     }
 
@@ -167,6 +182,8 @@ public class PlayerControll : MonoBehaviour
     {
         moveDirection = Vector2.zero;
     }
+
+    
 
     private void Update()
     {

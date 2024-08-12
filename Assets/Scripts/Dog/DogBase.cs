@@ -108,6 +108,18 @@ public class DogBase : RecycleObject
         isProcessing = false;
         dogQuestionMark.SetActive(false);
         watingNumber = 5;
+        orderCount = 0;
+        usingCushion = null;
+
+        StopAllCoroutines();
+        ChangeState(DogAnimation.Wait);
+
+        for (int i = 0; i < ChooseItems.Length; i++)
+        {
+            ChooseItems[i] = null;
+        }
+
+
         if (store == null)
         {
             store = GameObject.FindWithTag("MergedStore");
@@ -117,13 +129,13 @@ public class DogBase : RecycleObject
         {
             isNight = true;
         }
-        StopAllCoroutines();
     }
 
 
 
     protected override void OnDisable()
     {
+        
         isProcessing = false;
         base.OnDisable();
     }
